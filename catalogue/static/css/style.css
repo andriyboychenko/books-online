@@ -1,0 +1,142 @@
+html { overflow-y: scroll; }
+
+a{
+	color: #005580;	
+}
+
+div.search-bar {
+    background-color: #eeeeee;
+    color:#606060;
+    padding:15px 25px;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+}
+
+div.search-content {
+    margin-top:20px;
+}
+div.search-item{
+    margin-top:20px;
+    color:#606060;
+}
+div.search-item-title {
+    font-size: 26px;
+    font-weight: bold;
+}
+span.search-item-price{
+    color: #900;
+    font-size: 26px;
+    font-weight: bold;
+}
+div.search-item-description-lbl{
+    text-align:right;
+}
+
+select{
+    vertical-align: -webkit-baseline-middle;
+}
+
+span.select-box-lbl{
+    margin-top: 4px;
+}
+
+input#search-input{
+    /*vertical-align: -webkit-baseline-middle;*/
+    margin-top: 8px;
+    width: 300px;
+}
+
+input.search-param-small-input{
+    vertical-align: -webkit-baseline-middle;
+    width: 50px;
+}
+
+
+
+table#tbl-book-list {
+    color:#606060;
+}
+    td.book-list-cell {
+        vertical-align:middle;
+    }
+
+        p.book-list-author {
+            font-size: 10pt;
+            color: #B8B8B8;
+        }
+
+
+/*----------------SPRITES----------------*/
+
+.sprite{
+		background-image: url("../img/site-icons.jpg");
+		position:absolute;
+        width:14px;
+        height:14px;
+	}
+	.icon-basket {
+        background-position: -425px -140px;
+        margin-left:5px;
+        margin-top:3px;
+    }
+
+/*----------------SITE TITLE----------------*/
+div.site-title a{
+	position:absolute;
+    padding-top: 5px;
+	font-size:30px;
+	font: bold 30px/1 "Helvetica Neue", Helvetica, Arial, sans-serif;
+	color: white;
+    text-decoration: none;
+  	text-shadow: 0 1px 0 #ccc,
+               0 2px 0 #c9c9c9,
+               0 3px 0 #bbb,
+               0 4px 0 #b9b9b9,
+               0 5px 0 #aaa,
+               0 6px 1px rgba(0,0,0,.1),
+               0 0 5px rgba(0,0,0,.1),
+               0 1px 3px rgba(0,0,0,.3),
+               0 3px 5px rgba(0,0,0,.2),
+               0 5px 10px rgba(0,0,0,.25),
+               0 10px 10px rgba(0,0,0,.2),
+               0 20px 20px rgba(0,0,0,.15);
+}	
+
+/*----------------NAV BAR ADJUSTMENTS----------------*/
+.nav-list > .active > a, .nav-list > .active > a:hover{
+    background-color: #C8C8C8;
+}
+
+.nav-header{
+    padding: 0px 0px;
+}
+
+.nav-list > li > a {
+    padding: 3px 0px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*---------new styles-------*/
+div.mngmt-container {
+    background-color: #f7f5fa; 
+    border-radius: 5px; 
+    margin-top: 30px; 
+    padding: 10px 30px 10px 30px;
+}
+
+table.mngmt-table {
+    margin-top:70px;
+}

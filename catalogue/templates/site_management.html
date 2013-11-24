@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Название твоего сайта</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+
+    
+    <!-- Bootstrap -->
+    <link href="/static/dist/css/bootstrap.css" rel="stylesheet" media="screen">
+    <link href="/static/dist/css/docs.css" rel="stylesheet" media="screen">
+    <link href="/static/css/style.css" rel="stylesheet" media="screen">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="../../assets/js/html5shiv.js"></script>
+      <script src="../../assets/js/respond.min.js"></script>
+    <![endif]-->
+  </head>
+    
+  <body>
+   
+     <header class="navbar navbar-fixed-top">
+         <div class="container">
+            <div class="site-title">
+                <a href="/catalogue">Название сайта</a>
+            </div>
+            <div class="row" style="text-align: right; padding:15px">
+                <a href="/catalogue/site_management/">Войти</a>
+                <span>|</span>
+                <a href="#">Корзина (1) </a>
+                <span class="sprite icon-basket"></span>
+            </div>
+        </div>
+    </header>
+   
+    <div class="container" >
+        <div class="row">
+            
+            
+			{% include "shared/admin-options.html" %}
+              
+            
+        
+            <div class="col-md-9 mngmt-container">
+                
+                <div class="row">
+                    
+                    <div class="col-md-12">
+                        
+                        <h3>Редактирование категорий книг</h3>
+                        
+                            <div id="error_message" class="alert alert-danger alert-dismissable" style="display:none;">
+                                <button id="close_error_btn" type="button" class="close">&times;</button>
+                                <span ></span>
+                            </div>
+                            <button class="btn btn-success pull-right">Добавить</button>
+                        
+                        <table class="table table-condensed table-hover mngmt-table">
+                            <thead>
+                                <th>Название категории</th>
+                                <th style="width:40%">Описание категории</th>
+                                <th>Главная категория</th>
+                                <th style="width:100px;">Действие</th>
+                            </thead>
+                            <tbody>
+                                
+                                {% if book_cathegory_list %}
+                                    {% for cathegory in book_cathegory_list %}  
+                                        <tr id="row_{{ cathegory.id }}">
+                                            <td>{{ cathegory.cathegory_name }}</td>
+                                            <td>{{ cathegory.cathegory_description }}</td>
+                                            <td>
+                                                {{ cathegory.sub_cathegory_of|default_if_none:"это главная категория" }}
+                                            </td>
+                                            <td>
+                                                
+                                                <div class="btn-group">
+                                                    <button class="btn btn-xs dropdown-toggle" data-toggle="dropdown" style="width:100px;">
+                                                        <span class="caret"></span>
+                                                    </button>
+                                                    <ul class="dropdown-menu pull-right">
+                                                        <li><a class="edit-btn" id="{{ cathegory.id }}" href="#">изменить</a></li>
+                                                        <li><a class="remove-btn" id="{{ cathegory.id }}" href="#">удалить</a></li>
+                                                    </ul>
+                                                </div>
+                                    
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div><!--row-->  
+            </div>
+            
+            
+        </div><!--row-->
+    </div>
+      
+      
+  </body>
+
+    <script src="/static/js/jquery-1.10.2.min.js"></script>
+    <script src="/static/js/jquery-ui.js"></script>
+    <script src="/static/js/jquery.cookie.js"></script>
+    <script src="/static/dist/js/bootstrap.min.js"></script>
+ 
+    
+    
+    <script type='text/javascript'>
+        $(document).ready(function() {
+			
+			$("#admin-opt1").attr('class', 'active');
+            
+            
+            
+            $(".remove-btn").click(function (){
+            
+                var currentId = $(this).attr('id');
+                
+                $.post( "/ajax_catalogue/remove/", 
+                    {
+                        object_id:currentId,
+                        object_type:'bookCathegory'
+                    },   
+                    function( data ) {
+                        var response = eval('(' + data + ')');
+                        if(response.status === 5){
+                                                
+                            $("#row_"+currentId)
+                                .animate( {backgroundColor:'#FFFF99'}, 1000)
+                                    .fadeOut(1000,function() {
+                                        $('#row_'+currentId).remove();
+                            });
+                            
+                        }else {
+                            
+                            $("#error_message > span").html("<strong>Ошибка!</strong> Не удалось удалить категорию.");
+                            $("#error_message").show();
+                        
+                        }
+                    }
+                );
+            });
+            
+            
+            $("#close_error_btn").click(function (){
+                $("#error_message").hide();
+            });
+            
+        });
+    </script>
+  
+    
+</html>

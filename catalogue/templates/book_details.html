@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+
+
+<html>
+  <head>
+    <title>Название твоего сайта</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+
+    <!-- Bootstrap -->
+    <link href="/static/css/bootstrap.css" rel="stylesheet" media="screen">
+    <link href="/static/css/style.css" rel="stylesheet" media="screen">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="../../assets/js/html5shiv.js"></script>
+      <script src="../../assets/js/respond.min.js"></script>
+    <![endif]-->
+  </head>
+    
+  <body>
+   
+     
+    <div class="container">
+        <div class="site-title">
+            <a href="/catalogue">Название сайта</a>
+        </div>
+        <div class="row" style="text-align: right; padding:15px">
+            <a href="#">Войти</a>
+            <span>|</span>
+            <a href="#">Корзина (1) </a>
+            <span class="sprite icon-basket"></span>
+        </div>
+    </div>
+
+    <div class="container" >
+
+      <!-- Main component for a primary marketing message or call to action -->
+        <div class="row">
+            <div class="span12">
+                <div class="search-bar" >
+                    
+                    
+                    
+                    <div style="text-align: right; vertical-align: -webkit-baseline-middle;">
+                        <input type="text" id="search-input" class="form-control" placeholder="Введите название книги или имя автора">
+                        <button class="btn btn-default" type="submit">Поиск</button>
+                        <button id="btn-search-parameters" class="btn btn-default">Параметры</button>
+                    </div>
+                    
+                    <div id="search-parameters-container" style="display: none;">
+                        <div class="row">
+                            <div class="span3">
+                                <span>Цена:</span>
+                                <input type="text" id="price-input1" onkeypress="validatePrice(this.id)" onkeyup="validatePrice(this.id)" class="search-param-small-input" placeholder="от">
+                                <input type="text" id="price-input2" onkeypress="validatePrice(this.id)" onkeyup="validatePrice(this.id)" class="search-param-small-input" placeholder="до">
+                                <span>грн.</span>
+                            </div>
+                            
+                            <div class="span4">
+                                <span>Год издания:</span>
+                                <input type="text" id="year-input1" onkeypress="validatePrice(this.id)" onkeyup="validatePrice(this.id)" class="search-param-small-input" placeholder="от">
+                                <input type="text" id="year-input2" onkeypress="validatePrice(this.id)" onkeyup="validatePrice(this.id)" class="search-param-small-input" placeholder="до">
+    
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="span6">
+                                <div class="row">
+                                    <span class="select-box-lbl span2">Переплёт:</span>
+                                    <select class="span3" id="selectbasic" class="input">
+                                        <option></option>
+                                        <option>мягкий</option>
+                                        <option>твёрдый</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="span6">
+                                <div class="row">
+                                    <span class="select-box-lbl span2">Качество:</span>
+                                    <select class="span3" id="selectbasic" class="input">
+                                        <option></option>
+                                        <option>отличное</option>
+                                        <option>плохое</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="span6">
+                                <div class="row">
+                                    <span class="select-box-lbl span2">Язык издания:</span>
+                                    <select class="span3" id="selectbasic" class="input">
+                                        <option></option>
+                                        <option>украинский</option>
+                                        <option>русский</option>
+                                        <option>английский</option>
+                                        <option>немецкий</option>
+                                        <option>испанский</option>
+                                        <option>другой</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            
+                        </div>
+                        
+                        
+                    </div>  
+                    
+                </div>
+                
+            </div>
+        </div>  
+        
+        <div class="row">
+            
+            <div class="search-item span12">
+            
+                <ul class="nav nav-tabs" id="search-item-tab">
+                    <li class="active">
+                        <a href="#search-item-description">Описание</a>
+                    </li>
+                    <li><a href="#search-item-shipping">Доставка</a></li>
+                </ul>
+                
+                <div class="tab-content">
+                    
+                    <div class="tab-pane active" id="search-item-description">
+                        <div class="row">
+                            <div class="span3">
+                                <span class="thumbnail">
+                                    <img style="width: 175px; height: 195px;" src="/static/img/book-example.png">
+                                </span>
+                            </div>
+                            <div class="span9">
+                                
+                                <div class="row">
+                                    <div class="span9 search-item-title">
+                                        Название книги
+                                    </div>
+                                </div>
+                                <div class="row" style="margin-top:10px">
+                                    <div class="span6">
+                                        Имя Автора
+                                    </div>
+                                </div>
+                                
+                                <div class="row" style="margin-top:10px">
+                                    <div class="span9">
+                                        Цена: <span class="search-item-price">10</span> <span class="item-currence">грн.</span>
+                                        <button class="btn btn-default" type="submit">Купить сейчас</button>
+                                        <button class="btn btn-default" type="submit">Добавить в корзину</button>
+                                    </div>
+                                </div>
+                                
+                                <hr>
+                                
+                                <div class="row" style="margin-top:10px">
+                                    <div class="search-item-description-lbl span2">
+                                        Год издания:
+                                    </div>
+                                    <div class="span7">
+                                        <span class="item-publication-year">2009</span>
+                                    </div>
+                                </div>
+                                <div class="row" style="margin-top:10px">
+                                    <div class="search-item-description-lbl span2">
+                                        Переплёт:
+                                    </div>
+                                    <div class="span7">
+                                        мягкий
+                                    </div>
+                                </div>
+                                <div class="row" style="margin-top:10px">
+                                    <div class="search-item-description-lbl span2">
+                                        Качество:
+                                    </div>
+                                    <div class="span7">
+                                        отличное
+                                    </div>
+                                </div>
+                                <div class="row" style="margin-top:10px">
+                                    <div class="search-item-description-lbl span2">
+                                        Описание:
+                                    </div>
+                                    <div class="span7">
+                                        Описание книги здесь Описание книги здесь Описание книги здесьОписание книги здесь Описание книги здесьвОписание книги здесьОписание книги здесьОписание книги здесьОписание книги здесьОписание книги здесьОписание книги здесьОписание книги здесьОписание книги здесьОписание книги здесьОписание книги здесьОписание книги здесьОписание книги здесьОписание книги здесьОписание книги здесь
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div><!--search-item-description-->
+                    
+                    <div class="tab-pane" id="search-item-shipping">
+                        Здесь надо будет описать правила доставки и как она работает
+                    </div><!--search-item-comments-->
+                </div><!--tab-content-->
+                
+            </div><!--search item-->
+            
+        </div>
+        
+        
+
+    </div> <!-- /container -->
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="/static/js/jquery-1.10.2.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="/static/js/bootstrap.min.js"></script>
+      
+    <script>
+        $(document).ready(function() {
+            
+            $("#btn-search-parameters").click(function (){
+
+                if ( $( "#search-parameters-container:first" ).is( ":hidden" ) ) {
+                    $( "#search-parameters-container" ).slideDown( "fast" );
+                } else {
+                    $( "#search-parameters-container" ).slideUp( "fast" );
+                }
+                
+            });
+            
+            
+            $('#search-item-tab a').click(function (e) {
+                e.preventDefault();
+                $(this).tab('show');
+            });
+            
+            
+            
+        });
+        
+        function validatePrice(inputid){
+
+            var inputValue = document.getElementById(inputid).value;
+            var cleanInput = inputValue.replace(/[^\d+]/,"");
+            document.getElementById(inputid).value = cleanInput;
+            
+        }
+            
+          
+    </script>
+      
+
+    
+  </body>
+</html>
