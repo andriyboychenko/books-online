@@ -138,5 +138,21 @@ div.mngmt-container {
 }
 
 table.mngmt-table {
-    margin-top:70px;
+    margin-top:20px;
+}
+
+div.alert{
+    position:absolute;
+    display:none; 
+    width:100%;
+    padding:6px;
+}
+    div.alert > button.close_btn {
+        top: 0px;
+        right: 5px;
+    }
+
+textarea
+{
+   resize: none;
 }

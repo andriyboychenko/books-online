@@ -29,9 +29,9 @@ def remove(request):
         if object_type == "bookCathegory":
             print "deleting cathegory"
             
-        action_response['status'] = 5 #see ResponseMessages
+        action_response['status'] = 1 #1-ok, 2-warn, 3-error
     except :
-        action_response['status'] = 6 #see ResponseMessages
+        action_response['status'] = 3
     
     
     

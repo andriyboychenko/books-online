@@ -111,7 +111,7 @@ ROOT_URLCONF = 'books_online.urls'
 WSGI_APPLICATION = 'books_online.wsgi.application'
 
 TEMPLATE_DIRS = (
-    '/home/andriy/workspace/books-online/books_online',
+    '/home/andriy/workspace/books-online/books-online',
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
