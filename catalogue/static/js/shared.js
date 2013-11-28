@@ -11,23 +11,17 @@ $(document).ready(function() {
     $("#save-object").click(function(){
         
         var invalidInputs = 0;
-        var jsonString = String();
-        var jsonObj = {};
-		
+        
         $('form').find('input:text,textarea,select').each(function(index){ 
              
-             var currElement = $(this);
-             var currElementId = currElement.attr('id');
-             
+             var currElement = $(this);            
              
              /*
              In case of input:text and textareas the value is saved
              In case of select the option id is saved
              */
              if( currElement.get(0).tagName !== "SELECT"){
-                 
-                 jsonObj[currElementId] = currElement.val();
-                
+                                 
                  var isValid = true;
                  if(currElement.attr('required') === 'required'){
                      isValid = validateInput(this);
@@ -36,16 +30,14 @@ $(document).ready(function() {
                     invalidInputs ++;
                  }
                  
-             }else{
-                 jsonObj[currElementId] = currElement.children(":selected").attr("id");
              }
              
         });
         
-        if(invalidInputs == 0){
-            jsonString = JSON.stringify(jsonObj);
+        if(invalidInputs != 0){
+            return false;
         }
-        alert(jsonString);
+        
      
         
 	});

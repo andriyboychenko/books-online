@@ -8,6 +8,8 @@ urlpatterns = patterns('catalogue.views',
     url(r'^catalogue/$', 'common.index'),
     url(r'^catalogue/site_management/$', 'common.sitemanagement'),
     
+    url(r'^catalogue/insert_book_cathegory/$', 'main.insert_book_cathegory'),
+    
     url(r'^catalogue/(?P<book_id>\d+)/$', 'bookdetail'),
 
     
