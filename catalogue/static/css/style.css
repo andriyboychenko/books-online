@@ -147,12 +147,18 @@ div.alert{
     width:100%;
     padding:6px;
 }
-    div.alert > button.close_btn {
+    div.alert > button.close-btn {
         top: 0px;
         right: 5px;
     }
 
-textarea
-{
+textarea{
    resize: none;
+}
+
+.error-field{
+    border-color: #953b39;
+    -webkit-box-shadow: 0 0 6px #d59392;
+    -moz-box-shadow: 0 0 6px #d59392;
+    box-shadow: 0 0 6px #d59392;
 }

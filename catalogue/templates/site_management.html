@@ -48,33 +48,34 @@
                         {% include "shared/admin-message-bar.html" %}
                         
                         
-                        <div class="modal fade" id="modify_window" data-backdrop="static" data-keyboard="false">
+                        <div class="modal fade" id="modify-window" data-backdrop="static" data-keyboard="false">
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                                         <h4 class="modal-title">Modal title</h4>
                                     </div>
-                                    <div class="modal-body">
-                                        <p><input type="text" class="form-control" placeholder="Название категории"></p>
-                                        <p><textarea class="form-control" placeholder="Краткое описание категории" rows="3"></textarea></p>
-                                        <p>Выберете главную категорию:</p>
-                                        <p>
-                                            <select class="form-control">
-                                                <option></option>
-                                                {% if book_cathegory_list %}
-                                                    {% for cathegory in book_cathegory_list %}  
-                                                        <option id="super_cath_{{ cathegory.id }}">{{ cathegory.cathegory_name }}</option>
-                                                    {% endfor %}
-                                                {% endif %}
-                                            </select>
-                                        </p>
-                                        <h6>Если данная категория является главной, то оставьте это поле белым.</h6>
-
+                                    <div class="modal-body" >
+                                        <form>
+                                            <p><input type="text" class="form-control" id="book-name-txt" placeholder="Название категории" required></p>
+                                            <p><textarea class="form-control" id="book_desc-txt" placeholder="Краткое описание категории" rows="3"></textarea></p>
+                                            <p>Выберете главную категорию:</p>
+                                            <p>
+                                                <select class="form-control" id="super-cathegory-select" >
+                                                    <option id="null"></option>
+                                                    {% if book_cathegory_list %}
+                                                        {% for cathegory in book_cathegory_list %}  
+                                                            <option id="{{ cathegory.id }}">{{ cathegory.cathegory_name }}</option>
+                                                        {% endfor %}
+                                                    {% endif %}
+                                                </select>
+                                            </p>
+                                            <h6>Если данная категория является главной, то оставьте это поле белым.</h6>
+                                        </form>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
-                                        <button type="button" class="btn btn-primary">Сохранить</button>
+                                        <button type="button" id="save-object" class="btn btn-primary">Сохранить</button>
                                     </div>
                                 </div><!-- /.modal-content -->
                             </div><!-- /.modal-dialog -->
@@ -133,17 +134,25 @@
     <script src="/static/dist/js/bootstrap.min.js"></script>
  
     <script type='text/javascript'>
+        
         var modal_title = "новую категорию";
-        var object_type = "bookCathegory";
         var success_msg = "Категория была успешно удалена.";
         var error_msg = "<strong>Ошибка!</strong> Не удалось удалить категорию.";
+        
+        var object_type = "bookCathegory"; //object type to perform operation(ie: cathegory,book,quality)
+
+        
+
+        
         
         $(document).ready(function() {
 			
 			$("#admin-opt1").attr('class', 'active');
             
         });
+        
     </script>
+
     
   
     <script src="/static/js/shared.js"></script>
