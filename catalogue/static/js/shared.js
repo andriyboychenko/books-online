@@ -1,5 +1,7 @@
 $(document).ready(function() {
 
+    var alertMessageElement = $(".alert");
+    
 	/* Modal window of ADD, EDIT */
 	$("#add-btn").click(function(){
 		$('#modify-window').modal();
@@ -12,7 +14,7 @@ $(document).ready(function() {
         
         var invalidInputs = 0;
         
-        $('form').find('input:text,textarea,select').each(function(index){ 
+        $("form").find('input:text,textarea,select').each(function(index){ 
              
              var currElement = $(this);            
              
@@ -44,14 +46,14 @@ $(document).ready(function() {
 
 	/* Close aler messages */
 	$(".close-btn").click(function (){
-		$(".alert").hide();
+		alertMessageElement.hide();
 	});
 
 
     /* Remove object */
 	$(".remove-btn").click(function (){
                 
-            $(".alert").hide();
+            alertMessageElement.hide();
         
             var currentId = $(this).attr('id');
             
@@ -66,10 +68,12 @@ $(document).ready(function() {
                     if(response.status === 1){
                                             
                         $("#row_"+currentId)
-                            .animate( {backgroundColor:'#FFFF99'}, 1000)
+                            .animate( {backgroundColor:'#E8E8E8'}, 1000)
                                 .fadeOut(1000,function() {
                                     $('#row_'+currentId).remove();
                         });
+                                                
+                        $("#super-cathegory-select option[id='cathegory_option_"+currentId+"']").remove();
                         
                         $("#info-message > span").html(success_msg);
                         $("#info-message").show();

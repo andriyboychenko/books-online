@@ -58,15 +58,15 @@
                                     <form action="/catalogue/insert_book_cathegory/" method="post">
                                     <div class="modal-body" >
                                         
-                                            <p><input type="text" class="form-control" name="book-cathegory-name-txt" placeholder="Название категории" required></p>
-                                            <p><textarea class="form-control" name="book-cathegory-desc-txt" placeholder="Краткое описание категории" rows="3"></textarea></p>
+                                            <p><input type="text" class="form-control" name="book-cathegory-name-txt" placeholder="Название категории" maxlength="50" required></p>
+                                            <p><textarea class="form-control" name="book-cathegory-desc-txt" placeholder="Краткое описание категории" maxlength="500" rows="3"></textarea></p>
                                             <p>Выберете главную категорию:</p>
                                             <p>
-                                                <select class="form-control" name="super-cathegory-select" >
+                                                <select class="form-control" name="super-cathegory-select" id="super-cathegory-select" >
                                                     <option id="null"></option>
                                                     {% if book_cathegory_list %}
                                                         {% for cathegory in book_cathegory_list %}  
-                                                            <option value="{{ cathegory.id }}">{{ cathegory.cathegory_name }}</option>
+                                                            <option id="cathegory_option_{{ cathegory.id }}" value="{{ cathegory.id }}">{{ cathegory.cathegory_name }}</option>
                                                         {% endfor %}
                                                     {% endif %}
                                                 </select>
@@ -90,7 +90,7 @@
                                 <th>Название категории</th>
                                 <th style="width:40%">Описание категории</th>
                                 <th>Главная категория</th>
-                                <th style="width:100px;">Действие</th>
+                                <th style="width:105px;">Действие</th>
                             </thead>
                             <tbody>
                                 

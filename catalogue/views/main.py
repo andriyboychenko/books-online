@@ -33,7 +33,8 @@ def remove(request):
             book_cathegory.save()
             
         action_response['status'] = 1 #1-ok, 2-warn, 3-error
-    except :
+    except Exception as error:
+        print error
         action_response['status'] = 3
     
     
@@ -44,6 +45,12 @@ def remove(request):
     
     return response
 
+#
+#TODO: https://docs.djangoproject.com/en/dev/topics/forms/
+#reposts on refresh should be avoided
+#
+
+
 def insert_book_cathegory(request):
     
     book_cathegory_name_txt = request.POST["book-cathegory-name-txt"]
@@ -53,21 +60,53 @@ def insert_book_cathegory(request):
     status_code = 1 #1-ok, 2-warn, 3-error
     
     try:
-   
-        super_cathegory = BookCathegory.objects.filter(id=super_cathegory_select)[0]
-        modify_user = User.objects.filter(id=1)[0] #TODO: hardcoded
-    
-        cathegory = BookCathegory(cathegory_name=book_cathegory_name_txt, cathegory_description=book_cathegory_desc_txt, sub_cathegory_of=super_cathegory, db_insert_date=timezone.now(), db_modify_date=timezone.now(), db_modify_user=modify_user)
-    
-        cathegory.save()
-
-    except :
         
+        users = User.objects.filter(id=1) #TODO: hardcoded
+        if len(users) > 0:
+                
+            modify_user = users[0]
+            
+            check_if_exists = BookCathegory.objects.filter(cathegory_name=book_cathegory_name_txt, active=True)
+
+            if len(check_if_exists) == 0:
+            
+                #User haven't selected super cathegory
+                if len(super_cathegory_select) == 0:
+                    cathegory = BookCathegory(
+                                              cathegory_name=book_cathegory_name_txt,
+                                              cathegory_description=book_cathegory_desc_txt,
+                                              db_insert_date=timezone.now(), 
+                                              db_modify_date=timezone.now(), 
+                                              db_modify_user=modify_user)
+                    
+                else:
+                    super_cathegory = BookCathegory.objects.filter(id=super_cathegory_select, active=True)[0]
+                    cathegory = BookCathegory(
+                                              cathegory_name=book_cathegory_name_txt, 
+                                              cathegory_description=book_cathegory_desc_txt, 
+                                              sub_cathegory_of=super_cathegory, 
+                                              db_insert_date=timezone.now(), 
+                                              db_modify_date=timezone.now(), 
+                                              db_modify_user=modify_user)
+    
+                cathegory.save()
+            
+            else:
+                #retun error to the fronend
+                print "cathegory exits"
+
+    except Exception as error:
+        print error
         status_code = 3
         
     book_cathegory_list = BookCathegory.objects.filter(active=True).order_by('cathegory_name')
     
-    return render_to_response('catalogue/templates/site_management.html', {'book_cathegory_list': book_cathegory_list, 'status': status_code})
+    return render_to_response(
+                              'catalogue/templates/site_management.html', 
+                              {
+                               'book_cathegory_list': book_cathegory_list, 
+                               'status': status_code
+                               })
 
 
 

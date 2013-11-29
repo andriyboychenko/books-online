@@ -139,7 +139,13 @@ div.mngmt-container {
 
 table.mngmt-table {
     margin-top:20px;
+    border-collapse: collapse;
+    table-layout: fixed;
+    width:100%
 }
+    table.mngmt-table > tbody > tr > td {
+        word-wrap:break-word;
+    }
 
 div.alert{
     position:absolute;
