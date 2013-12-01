@@ -147,6 +147,7 @@ table.mngmt-table {
         word-wrap:break-word;
     }
 
+/*alert messages*/
 div.alert{
     position:absolute;
     display:none; 
@@ -158,13 +159,25 @@ div.alert{
         right: 5px;
     }
 
+
 textarea{
    resize: none;
 }
 
+/* shado of input field when the error occours on it*/
 .error-field{
     border-color: #953b39;
     -webkit-box-shadow: 0 0 6px #d59392;
     -moz-box-shadow: 0 0 6px #d59392;
     box-shadow: 0 0 6px #d59392;
+}
+
+/*remove confiramtion modal*/
+div#remove-confirmation-window{
+    overflow-y:hidden;
+    top:30%;
+}
+
+div#modify-window{
+    overflow-y:hidden;
 }
