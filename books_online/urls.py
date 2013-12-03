@@ -6,9 +6,9 @@ from django.conf.urls import patterns, include, url
 
 urlpatterns = patterns('catalogue.views',
     url(r'^catalogue/$', 'common.index'),
-    url(r'^catalogue/site_management/$', 'common.sitemanagement'),
+    url(r'^catalogue/site-management/$', 'common.sitemanagement'),
     
-    url(r'^catalogue/insert_book_cathegory/$', 'main.insert_book_cathegory'),
+    url(r'^catalogue/insert-book-category/$', 'category.insert_book_category'),
     
     url(r'^catalogue/(?P<book_id>\d+)/$', 'bookdetail'),
 
@@ -16,7 +16,8 @@ urlpatterns = patterns('catalogue.views',
     
     
     #AJAX
-    url(r'^ajax_catalogue/remove/$', 'main.remove'),
+    url(r'^ajax-catalogue/bookcategory/remove/$', 'category.remove'),
+    url(r'^ajax-catalogue/bookcategory/valid-name/$', 'category.valid_name'),
 
     
     

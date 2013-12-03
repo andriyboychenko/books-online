@@ -25,7 +25,7 @@
             <a href="/catalogue">Название сайта</a>
         </div>
         <div class="row" style="text-align: right; padding:15px">
-            <a href="/catalogue/site_management/">Войти</a>
+            <a href="/catalogue/site-management/">Войти</a>
             <span>|</span>
             <a href="#">Корзина (1) </a>
             <span class="sprite icon-basket"></span>
@@ -115,9 +115,9 @@
                         <ul class="nav nav-list">
                             <li class="nav-header">Категории книг</li>
                             <li class="active"><a href="#">Все категории</a></li>
-                            {% if book_cathegory_list %}
-                                {% for cathegory in book_cathegory_list %}
-                                     <li><a href="#">{{ cathegory.cathegory_name }}</a></li>
+                            {% if book_category_list %}
+                                {% for category in book_category_list %}
+                                     <li><a href="#">{{ category.category_name }}</a></li>
                                     
                             <!--<li><a href="#">Художественные</a></li>
                             <li><a href="#">Детектив</a></li>
@@ -157,12 +157,12 @@
                         <tbody>
                             <tr>
                                 <td>
-                                    <a href="book_details.html" class="thumbnail">
+                                    <a href="book-details.html" class="thumbnail">
                                         <img style="width: 75px; height: 95px;" src="/static/img/book-example.png">
                                     </a>
                                 </td>
                                 <td class="book-list-cell">
-                                    <a href="book_details.html">Название книги</a>
+                                    <a href="book-details.html">Название книги</a>
                                     <p class="book-list-author">Автор: имя автора</p>
                                 </td>
                                 <td class="book-list-cell">2013</td>
@@ -174,12 +174,12 @@
                             
                             <tr>
                                 <td>
-                                    <a href="book_details.html" class="thumbnail">
+                                    <a href="book-details.html" class="thumbnail">
                                         <img style="width: 75px; height: 95px;" src="/static/img/book-example2.jpg">
                                     </a>
                                 </td>
                                 <td class="book-list-cell">
-                                    <a href="book_details.html">Название книги 2</a>
+                                    <a href="book-details.html">Название книги 2</a>
                                     <p class="book-list-author">Автор: имя автора</p>
                                 </td>
                                 <td class="book-list-cell">2012</td>

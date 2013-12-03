@@ -21,7 +21,7 @@
                 <a href="/catalogue">Название сайта</a>
             </div>
             <div class="row" style="text-align: right; padding:15px">
-                <a href="/catalogue/site_management/">Войти</a>
+                <a href="/catalogue/site-management/">Войти</a>
                 <span>|</span>
                 <a href="#">Корзина (1) </a>
                 <span class="sprite icon-basket"></span>
@@ -32,7 +32,9 @@
     <div class="container" >
         
         <div style="display:none">
+            <input type="hidden" id="object-type" value="bookcategory"/>
             <input type="hidden" id="remove-confirmation-object-name" value="категорию"/>
+            <input type="hidden" id="object-exists-message" value="Категория с таким именем уже существует!"/>
         </div>
         
         {% include "shared/admin-remove-confirm.html" %}
@@ -45,18 +47,21 @@
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                         <h4 class="modal-title">Modal title</h4>
                     </div>
-                    <form action="/catalogue/insert_book_cathegory/" method="post">
+                    <form action="/catalogue/insert-book-category/" method="post">
                         <div class="modal-body" >
                             
-                                <p><input type="text" class="form-control" name="book-cathegory-name-txt" placeholder="Название категории" maxlength="50" required></p>
-                                <p><textarea class="form-control" name="book-cathegory-desc-txt" placeholder="Краткое описание категории" maxlength="500" rows="3"></textarea></p>
+                                <p><input type="text" class="form-control no-repeat-field" name="book-category-name-txt" placeholder="Название категории" maxlength="50" data-toggle="popover" data-content data-placement="top" required></p>
+                              
+                            
+                            
+                                <p><textarea class="form-control" name="book-category-desc-txt" placeholder="Краткое описание категории" maxlength="500" rows="3"></textarea></p>
                                 <p>Выберете главную категорию:</p>
                                 <p>
-                                    <select class="form-control" name="super-cathegory-select" id="super-cathegory-select" >
+                                    <select class="form-control" name="super-category-select" id="super-category-select" >
                                         <option id="null"></option>
-                                        {% if book_cathegory_list %}
-                                            {% for cathegory in book_cathegory_list %}  
-                                                <option id="cathegory_option_{{ cathegory.id }}" value="{{ cathegory.id }}">{{ cathegory.cathegory_name }}</option>
+                                        {% if book_category_list %}
+                                            {% for category in book_category_list %}  
+                                                <option id="category_option_{{ category.id }}" value="{{ category.id }}">{{ category.category_name }}</option>
                                             {% endfor %}
                                         {% endif %}
                                     </select>
@@ -101,13 +106,13 @@
                             </thead>
                             <tbody>
                                 
-                                {% if book_cathegory_list %}
-                                    {% for cathegory in book_cathegory_list %}  
-                                        <tr id="row_{{ cathegory.id }}">
-                                            <td>{{ cathegory.cathegory_name }}</td>
-                                            <td>{{ cathegory.cathegory_description }}</td>
+                                {% if book_category_list %}
+                                    {% for category in book_category_list %}  
+                                        <tr id="row_{{ category.id }}">
+                                            <td>{{ category.category_name }}</td>
+                                            <td>{{ category.category_description }}</td>
                                             <td>
-                                                {{ cathegory.sub_cathegory_of|default_if_none:"это главная категория" }}
+                                                {{ category.sub_category_of|default_if_none:"это главная категория" }}
                                             </td>
                                             <td>
                                                 
@@ -116,8 +121,8 @@
                                                         <span class="caret"></span>
                                                     </button>
                                                     <ul class="dropdown-menu pull-right">
-                                                        <li><a class="edit-btn" id="{{ cathegory.id }}" href="#">изменить</a></li>
-                                                        <li><a class="remove-btn" id="{{ cathegory.id }}" href="#">удалить</a></li>
+                                                        <li><a class="edit-btn" id="{{ category.id }}" href="#">изменить</a></li>
+                                                        <li><a class="remove-btn" id="{{ category.id }}" href="#">удалить</a></li>
                                                     </ul>
                                                 </div>
                                     
@@ -142,14 +147,15 @@
     <script src="/static/js/jquery-ui.js"></script>
     <script src="/static/js/jquery.cookie.js"></script>
     <script src="/static/dist/js/bootstrap.min.js"></script>
- 
+
+    
     <script type='text/javascript'>
         
         var modal_title = "новую категорию";
         var success_msg = "Категория была успешно удалена.";
         var error_msg = "<strong>Ошибка!</strong> Не удалось удалить категорию.";
         
-        var object_type = "bookCathegory"; //object type to perform operation(ie: cathegory,book,quality)
+        //var object_type = "bookcategory"; //object type to perform operation(ie: category,book,quality)
 
         
 

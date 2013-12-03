@@ -18,13 +18,13 @@ class User(models.Model):
     def __unicode__(self):
         return self.name
 
-class BookCathegory(models.Model):
-    cathegory_name = models.CharField(max_length=50)
-    cathegory_description = models.CharField(max_length=500)
-    sub_cathegory_of = models.ForeignKey('self', null=True, blank=True)
+class BookCategory(models.Model):
+    category_name = models.CharField(max_length=50)
+    category_description = models.CharField(max_length=500)
+    sub_category_of = models.ForeignKey('self', null=True, blank=True)
     db_insert_date = models.DateTimeField('date published')
     db_modify_date = models.DateTimeField('date published')
     db_modify_user = models.ForeignKey(User)
     active = models.BooleanField(default=1)
     def __unicode__(self):
-        return self.cathegory_name
+        return self.category_name
