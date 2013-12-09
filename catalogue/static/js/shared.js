@@ -12,40 +12,21 @@ $(document).ready(function() {
 		$(".modal-title").text("Добавить "+modal_title);
 	});
     
-    /* When closing modal window, all input fields should be clean*/
-    modalWindow.on("hidden.bs.modal", function () {
-        
-        $("form").find("input:text,textarea,select").each(function(index){
-           
-            /* removing error shadowed fields*/
-            var currElement = $(this);
-            var originalClass = currElement.attr('class');
-            var errorClassPosition = originalClass.lastIndexOf("error-field");
-    
-            if(errorClassPosition != -1){
-        
-                originalClass = originalClass.substring(0,errorClassPosition-1);
-                currElement.attr({'class': originalClass});
-            }
-            
-            /* cleaning inputs*/
-            currElement.val("");
-            
-            /* removing popovers*/
-            currElement.popover("hide");
-        });
-        
-    });
     
     
-    /* ---------- Save object inserted in modal window ---------*/
-    $("#save-object").click(function(){
-        
+    
+    
+    /*
+    Save object inserted in modal window 
+    */
+    $("#save-object").click(function(event){
+                
         var invalidInputs = 0;
         
         $("form").find("input:text,textarea,select").each(function(index){ 
              
-            var currElement = $(this);     
+            var currElement = $(this); 
+        
             
             /*
             In case of input:text and textareas the value is saved
@@ -57,8 +38,25 @@ $(document).ready(function() {
                 if(currElement.attr("required") === "required"){
                     isValid = validateInput(this, false);
                 }
+                
+                /*
+                It does not make sense to perform ajax request if input is empty
+                */
                 if(!isValid){
-                    invalidInputs ++;
+                        invalidInputs ++;
+                }else{
+                    
+                    /*
+                    Checking if field is already exists in database and could not be repeated
+                    */
+                    if(currElement.attr('class').lastIndexOf("no-repeat-field") != -1){
+                
+                        if( isFieldExists(this) ){
+                            invalidInputs ++;
+                        }
+                        
+                    }
+                    
                 }
                  
              }
@@ -66,6 +64,9 @@ $(document).ready(function() {
              
         });
         
+        /*
+        If there was invalid inputs, the form action is not finished
+        */
         if(invalidInputs != 0){
             return false;
         }
@@ -73,9 +74,9 @@ $(document).ready(function() {
 	});
     
     /* ------ Checks the database if the specific field exists ------- */
-    $(".no-repeat-field").change(function(  ) {
+    /*$(".no-repeat-field").change(function(event) {
         isFieldExists(this);
-    });
+    });*/
     
 
 	/* ------ Close alert messages -------- */
@@ -110,7 +111,7 @@ $(document).ready(function() {
                 var response = eval('(' + data + ')');
 
                 if(response.status === 1){
-                           isFieldExists             
+                                        
                     $("#row_"+currentRemoveId)
                         .animate( {backgroundColor:'#E8E8E8'}, 500)
                             .fadeOut(500,function() {
@@ -144,7 +145,7 @@ function validateInput(elem, isFieldExits){
     var currElement = $(elem);
     var originalClass = currElement.attr('class');
     var errorClassPosition = originalClass.lastIndexOf('error-field');
-    
+        
     if(errorClassPosition != -1){
         
         originalClass = originalClass.substring(0,errorClassPosition-1);
@@ -152,14 +153,19 @@ function validateInput(elem, isFieldExits){
     }
     
     if (!currElement.val() || isFieldExits === "true" ) {
-        
+                
         currElement.attr({'class': originalClass + ' error-field'});
+        
         
         if(!currElement.val()){
             currElement.attr(
                 "data-content", "Это поле не может быть пустым!"
             );
-            currElement.popover("toggle");
+            currElement.popover("enable");
+            currElement.popover("show");
+            currElement.change(function(event) {
+                currElement.popover("disable");
+            });
         }
         
         return false;
@@ -174,32 +180,70 @@ function isFieldExists(element){
     
     var currElement = $(element);
     var fieldValue = currElement.val();
-    var isExists = false;
-        
-    
+    var isFieldExists = false;
+            
+    $.ajaxSetup({async:false});//wait untill ajax responds
     $.get ( "/ajax-catalogue/"+object_type+"/valid-name/",
         {
             field_value:fieldValue
         },
         function ( data ) {
             
-            var response = eval('(' + data + ')');   
+            var response = eval('(' + data + ')');
             validateInput(element, response.isExists);
             
-            currElement.attr(
-                "data-content", $("#object-exists-message").val()
-            );
-            currElement.popover("show");
+            if( response.isExists === "true"){
+                
+                currElement.attr(
+                    "data-content", $("#object-exists-message").val()
+                );
+                currElement.popover("enable");
+                currElement.popover("show");
+                currElement.change(function(event) {
+                    currElement.popover("disable");
+                });
+                
+                isFieldExists = true;
+            }
             
         }
        
     );
     
-    return isExists;
+    return isFieldExists;
     
 }
 
 
-
+/* 
+When closing modal window, all input fields should be clean
+*/
+modalWindow.on("hidden.bs.modal", function () {
+    
+    $("form").find("input:text,textarea,select").each(function(index){
+       
+        /* 
+        removing error shadowed fields
+        */
+        var currElement = $(this);
+        var originalClass = currElement.attr('class');
+        var errorClassPosition = originalClass.lastIndexOf("error-field");
+        if(errorClassPosition != -1){
+            originalClass = originalClass.substring(0,errorClassPosition-1);
+            currElement.attr({'class': originalClass});
+        }
+        
+        /* 
+        cleaning inputs
+        */
+        currElement.val("");
+        
+        /* 
+        removing popovers
+        */
+        currElement.popover("hide");
+    });
+    
+});
 
 

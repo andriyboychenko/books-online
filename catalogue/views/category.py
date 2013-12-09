@@ -110,6 +110,8 @@ def insert_book_category(request):
 
 def valid_name(request):
     
+    print "exec!"
+    
     field_value = request.GET["field_value"]
     
     action_response = {}
