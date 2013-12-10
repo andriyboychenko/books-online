@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Название твоего сайта</title>
+    <title> {{lang.page_manege_category_title}} </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="content-type" content="text/html;charset=utf-8" />
 
@@ -18,12 +18,12 @@
      <header class="navbar navbar-fixed-top">
          <div class="container">
             <div class="site-title">
-                <a href="/catalogue">Название сайта</a>
+                <a href="/catalogue">{{ lang.page_manege_category_banner }}</a>
             </div>
             <div class="row" style="text-align: right; padding:15px">
-                <a href="/catalogue/site-management/">Войти</a>
+                <a href="/catalogue/site-management/">{{ lang.page_action_enter }}</a>
                 <span>|</span>
-                <a href="#">Корзина (1) </a>
+                <a href="#">{{ lang.page_action_basket }} </a>
                 <span class="sprite icon-basket"></span>
             </div>
         </div>
@@ -33,8 +33,8 @@
         
         <div style="display:none">
             <input type="hidden" id="object-type" value="bookcategory"/>
-            <input type="hidden" id="remove-confirmation-object-name" value="категорию"/>
-            <input type="hidden" id="object-exists-message" value="Категория с таким именем уже существует!"/>
+            <input type="hidden" id="remove-confirmation-object-name" value="{{ lang.page_manege_category_remove_object_name }}"/>
+            <input type="hidden" id="object-exists-message" value="{{ lang.page_manege_category_add_exists_alert }}"/>
         </div>
         
         {% include "shared/admin-remove-confirm.html" %}
@@ -50,12 +50,12 @@
                     <form action="/catalogue/insert-book-category/" method="post">
                         <div class="modal-body" >
                             
-                                <p><input type="text" class="form-control no-repeat-field" name="book-category-name-txt" placeholder="Название категории" maxlength="50" data-toggle="popover" data-content data-placement="top" autocomplete="off" required></p>
+                                <p><input type="text" class="form-control no-repeat-field" name="book-category-name-txt" placeholder="{{ lang.page_manege_category_add_name_input }}" maxlength="50" data-toggle="popover" data-content data-placement="top" autocomplete="off" required></p>
                               
                             
                             
-                                <p><textarea class="form-control" name="book-category-desc-txt" placeholder="Краткое описание категории" maxlength="500" rows="3"></textarea></p>
-                                <p>Выберете главную категорию:</p>
+                                <p><textarea class="form-control" name="book-category-desc-txt" placeholder="{{ lang.page_manege_category_add_desc_input }}" maxlength="500" rows="3"></textarea></p>
+                                <p>{{ lang.page_manege_category_add_name_chose_super_cat }}:</p>
                                 <p>
                                     <select class="form-control" name="super-category-select" id="super-category-select" >
                                         <option id="null"></option>
@@ -66,12 +66,12 @@
                                         {% endif %}
                                     </select>
                                 </p>
-                                <h6>Если данная категория является главной, то оставьте это поле белым.</h6>
+                                <h6>{{ lang.page_manege_category_add_note_1 }}</h6>
                             
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
-                            <button type="submit" class="btn btn-primary" id="save-object">Сохранить</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">{{ lang.page_action_cancel }}</button>
+                            <button type="submit" class="btn btn-primary" id="save-object">{{ lang.page_action_save }}</button>
                         </div>
                     </form>
                 </div><!-- /.modal-content -->
@@ -92,17 +92,17 @@
                     
                     <div class="col-md-12">
                         
-                        <h3>Редактирование категорий книг</h3>
+                        <h3>{{ lang.page_manage_category_sub_title }}</h3>
                         
                         {% include "shared/admin-message-bar.html" %}
                                                 
                         
                         <table class="table table-condensed table-hover mngmt-table">
                             <thead>
-                                <th>Название категории</th>
-                                <th style="width:40%">Описание категории</th>
-                                <th>Главная категория</th>
-                                <th style="width:105px;">Действие</th>
+                                <th>{{ lang.page_manage_category_name }}</th>
+                                <th style="width:40%">{{ lang.page_manage_category_desc }}</th>
+                                <th>{{ lang.page_manage_category_super_category }}</th>
+                                <th style="width:105px;">{{ lang.page_action_action }}</th>
                             </thead>
                             <tbody>
                                 
@@ -112,7 +112,7 @@
                                             <td>{{ category.category_name }}</td>
                                             <td>{{ category.category_description }}</td>
                                             <td>
-                                                {{ category.sub_category_of|default_if_none:"это главная категория" }}
+                                                {{ category.sub_category_of|default_if_none:lang.page_manage_category_it_is_main }}
                                             </td>
                                             <td>
                                                 
@@ -121,8 +121,8 @@
                                                         <span class="caret"></span>
                                                     </button>
                                                     <ul class="dropdown-menu pull-right">
-                                                        <li><a class="edit-btn" id="{{ category.id }}" href="#">изменить</a></li>
-                                                        <li><a class="remove-btn" id="{{ category.id }}" href="#">удалить</a></li>
+                                                        <li><a class="edit-btn" id="{{ category.id }}" href="#">{{ lang.page_action_modify }}</a></li>
+                                                        <li><a class="remove-btn" id="{{ category.id }}" href="#">{{ lang.page_action_remove }}</a></li>
                                                     </ul>
                                                 </div>
                                     
