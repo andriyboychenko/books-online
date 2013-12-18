@@ -2,13 +2,14 @@ from django.shortcuts import render_to_response
 from django.utils import timezone
 from django.http import HttpResponse
 from django.utils import simplejson as json
+from django.core import serializers
 
 
 from catalogue.entities import ResponseMessages
 
 
 from catalogue.models import BookCategory, User
-
+from catalogue.entities import RU_ru
 
 
 def bookdetail(request, book_id):
@@ -103,25 +104,29 @@ def insert_book_category(request):
                               'catalogue/templates/site-management.html', 
                               {
                                'book_category_list': book_category_list, 
-                               'status': status_code
+                               'status': status_code,
+                               'lang': RU_ru
                                })
 
 
 
 def valid_name(request):
-    
-    print "exec!"
-    
+        
     field_value = request.GET["field_value"]
-    
     action_response = {}
+    
+    try:
 
-    check_if_exists = BookCategory.objects.filter(category_name=field_value, active=True)
-   
-    if len(check_if_exists) == 0:
-        action_response['isExists'] = "false" # 1-yes or 0-no
-    else: 
-        action_response['isExists'] = "true"
+        check_if_exists = BookCategory.objects.filter(category_name=field_value, active=True)
+       
+        if len(check_if_exists) == 0:
+            action_response['isExists'] = "false"
+        else: 
+            action_response['isExists'] = "true"
+    
+    except Exception as error:
+        print error
+        action_response['isExists'] = "true" #TODO: send the specific error message or it is anought?
 
     response_data = json.dumps(action_response)
     response = HttpResponse()
@@ -129,6 +134,33 @@ def valid_name(request):
     
     return response
 
+
+
+def edit_load_data(request):
+    
+    category_id = request.GET["category_id"]
+    action_response = {}
+    
+    try:
+        edit_book_category = BookCategory.objects.filter(id=category_id)
+        action_response['status'] = 1
+        response_data = serializers.serialize('json', edit_book_category, fields=(
+                                                                                  'category_name',
+                                                                                  'category_description',
+                                                                                  'sub_category_of'))
+        #response_data = json.dumps(edit_book_category)
+        #response_data += json.dumps(action_response)
+        
+    
+    except Exception as error:
+        print error
+        action_response['status'] = 3
+        response_data = json.dumps(action_response)
+    
+    response = HttpResponse()
+    response.write(response_data)
+    
+    return response
 
 
 

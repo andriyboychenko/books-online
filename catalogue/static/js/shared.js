@@ -1,18 +1,55 @@
 var alertMessageElement = $(".alert");
 var modalWindow = $("#modify-window");
-var object_type = $("#object-type").val();
+
 
 
 $(document).ready(function() {
     
-            
-	/* Modal window of ADD, EDIT */
+    
+
+    
+    
+    
+	/* Modal window of ADD */
 	$("#add-btn").click(function(){
-		modalWindow.modal();
-		$(".modal-title").text("Добавить "+modal_title);
+        
+        var modal_title = $("#modal-title-add-message").val();
+		$(".modal-title").text(modal_title);
+        
+        modalWindow.modal();
+        
 	});
     
     
+    /* Modal window of EDIT */
+    $(".edit-btn").click(function(){
+        
+        var modal_title = $("#modal-title-edit-message").val();
+		$(".modal-title").text(modal_title);
+        
+        modalWindow.modal();
+        
+        var currentEditId = $(this).attr('id');
+        
+        $.get ( "/ajax-catalogue/"+object_type+"/edit-load-data/",
+            {
+                category_id:currentEditId
+            },
+            function ( data ) {
+                
+                var response = eval('(' + data + ')')[0];
+                
+                $("[name='book-category-name-txt']").val(response.fields.category_name);
+                $("[name='book-category-desc-txt']").val(response.fields.category_description);
+                $("[name='super-category-select']").val(response.fields.sub_category_of);
+                
+            }
+           
+        ).error(function() {
+            alert('woops!'); 
+        });
+        
+    });
     
     
     
