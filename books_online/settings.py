@@ -138,9 +138,16 @@ SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
 # the site admins on every HTTP 500 error when DEBUG=False.
 # See http://docs.djangoproject.com/en/dev/topics/logging for
 # more details on how to customize your logging configuration.
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+    'formatters': {
+        'simple': {
+            'format' : "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
+            'datefmt' : "%d/%b/%Y %H:%M:%S"
+        },
+    },
     'filters': {
         'require_debug_false': {
             '()': 'django.utils.log.RequireDebugFalse'
@@ -151,7 +158,20 @@ LOGGING = {
             'level': 'ERROR',
             'filters': ['require_debug_false'],
             'class': 'django.utils.log.AdminEmailHandler'
-        }
+        },
+        'console': {
+            'level':'DEBUG',
+            'class':'logging.StreamHandler',
+            'formatter': 'simple'
+        },
+        'logfile': {
+            'level':'DEBUG',
+            'class':'logging.handlers.RotatingFileHandler',
+            'filename': "/home/andriy/workspace/books-online/logfile",
+            'maxBytes': 50000,
+            'backupCount': 2,
+            'formatter': 'simple',
+        },
     },
     'loggers': {
         'django.request': {
@@ -159,5 +179,11 @@ LOGGING = {
             'level': 'ERROR',
             'propagate': True,
         },
+        'django': {
+            'handlers':['console', 'logfile'],
+            'propagate': True,
+            'level':'INFO',
+        },
+
     }
 }

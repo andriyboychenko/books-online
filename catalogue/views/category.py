@@ -20,6 +20,7 @@ def bookdetail(request, book_id):
         raise Http404
     return render_to_response('catalogue/templates/detail.html', {'poll': p})
 
+
 def remove(request):
     object_id = request.POST["object_id"]
     
@@ -31,7 +32,7 @@ def remove(request):
         action_response['status'] = 1 #1-ok, 2-warn, 3-error
         
     except Exception as error:
-        print error
+        log.error(error)
         action_response['status'] = 3
     
     
@@ -81,7 +82,7 @@ def insert_book_category(request):
                                  modify_user)
                 
     except Exception as error:
-        print error
+        log.error(error)
         status_code = 3
         
     book_category_list = BookCategory.objects.filter(active=True).order_by('category_name')
@@ -124,7 +125,7 @@ def valid_name(request):
                     action_response['isExists'] = "false"
                     
     except Exception as error:
-        print error
+        log.error(error)
         action_response['isExists'] = "true" #TODO: send the specific error message or it is anought?
 
     response_data = json.dumps(action_response)
@@ -137,22 +138,22 @@ def valid_name(request):
 
 def edit_load_data(request):
     
-    category_id = request.GET["category_id"]
+    categoryId = request.GET["category_id"]
     action_response = {}
     
     try:
-        edit_book_category = BookCategory.objects.filter(id=category_id)
+        editBookCategory = BookCategory.objects.filter(id=categoryId)
         action_response['status'] = 1
-        response_data = serializers.serialize('json', edit_book_category, fields=(
+        response_data = serializers.serialize('json', editBookCategory, fields=(
                                                                                   'category_name',
                                                                                   'category_description',
                                                                                   'sub_category_of'))
-        #response_data = json.dumps(edit_book_category)
+        #response_data = json.dumps(editBookCategory)
         #response_data += json.dumps(action_response)
         
     
     except Exception as error:
-        print error
+        log.error(error)
         action_response['status'] = 3
         response_data = json.dumps(action_response)
     

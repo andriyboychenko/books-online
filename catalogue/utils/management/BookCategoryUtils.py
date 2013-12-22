@@ -1,5 +1,9 @@
+import logging
+
 from django.utils import timezone
 from catalogue.models import BookCategory
+
+log = logging.getLogger("django")
 
 class BookCategoryUtils:
     
@@ -10,7 +14,7 @@ class BookCategoryUtils:
             bookCategory[0].active = False
             bookCategory[0].save()
         else:
-            print "Cannot remove new category. Category no more longger exists"
+            log.error("Cannot remove new category. Category no more longger exists")
         
         
         
@@ -39,11 +43,11 @@ class BookCategoryUtils:
                       db_modify_date = timezone.now(), 
                       db_modify_user = modifyUser)
                 else:
-                    print "Cannot insert new category. Super category no more longger exists"
+                    log.error("Cannot insert new category. Super category no more longger exists")
 
             category.save()
         else:
-            print "Cannot insert new category. Category exits"
+            log.error("Cannot insert new category. Category exits")
             
 
             
@@ -77,7 +81,7 @@ class BookCategoryUtils:
             currentCategory[0].save() 
             
         else:
-            print "Cannot modify new category. Category exits"
+            log.error("Cannot modify new category. Category exits")
             
             
             
