@@ -6,11 +6,10 @@ from django.core import serializers
 
 
 from catalogue.entities import ResponseMessages
-
+from catalogue.utils.management.BookCategoryUtils import BookCategoryUtils
 
 from catalogue.models import BookCategory, User
 from catalogue.entities import RU_ru
-
 
 def bookdetail(request, book_id):
     #https://docs.djangoproject.com/en/1.4/intro/tutorial03/#raising-404
@@ -27,11 +26,10 @@ def remove(request):
     action_response = {}
     
     try:
-        book_category = BookCategory.objects.filter(id=object_id)[0] 
-        book_category.active = False
-        book_category.save()
-            
+        categoryUtils = BookCategoryUtils()
+        categoryUtils.removeCategory(object_id)
         action_response['status'] = 1 #1-ok, 2-warn, 3-error
+        
     except Exception as error:
         print error
         action_response['status'] = 3
@@ -55,45 +53,33 @@ def insert_book_category(request):
     book_category_name_txt = request.POST["book-category-name-txt"]
     book_category_desc_txt = request.POST["book-category-desc-txt"]
     super_category_select = request.POST["super-category-select"]
-    
+    book_category_id = request.POST["book-category-id"]
+        
     status_code = 1 #1-ok, 2-warn, 3-error
     
     try:
-        
         users = User.objects.filter(id=1) #TODO: hardcoded
+        
         if len(users) > 0:
-                
             modify_user = users[0]
+                        
+            categoryUtils = BookCategoryUtils()
             
-            check_if_exists = BookCategory.objects.filter(category_name=book_category_name_txt, active=True)
-
-            if len(check_if_exists) == 0:
-            
-                #User haven't selected super category
-                if len(super_category_select) == 0:
-                    category = BookCategory(
-                                              category_name=book_category_name_txt,
-                                              category_description=book_category_desc_txt,
-                                              db_insert_date=timezone.now(), 
-                                              db_modify_date=timezone.now(), 
-                                              db_modify_user=modify_user)
-                    
-                else:
-                    super_category = BookCategory.objects.filter(id=super_category_select, active=True)[0]
-                    category = BookCategory(
-                                              category_name=book_category_name_txt, 
-                                              category_description=book_category_desc_txt, 
-                                              sub_category_of=super_category, 
-                                              db_insert_date=timezone.now(), 
-                                              db_modify_date=timezone.now(), 
-                                              db_modify_user=modify_user)
-    
-                category.save()
-            
+            # Modify book category
+            if len(book_category_id) > 0:
+                categoryUtils.modifyCategory(
+                                 book_category_id,
+                                 book_category_name_txt,
+                                 book_category_desc_txt,
+                                 super_category_select,
+                                 modify_user)
+            # Add new book category
             else:
-                #retun error to the fronend
-                print "category exits"
-
+                categoryUtils.addNewCategory(book_category_name_txt,
+                                 book_category_desc_txt,
+                                 super_category_select,
+                                 modify_user)
+                
     except Exception as error:
         print error
         status_code = 3
@@ -111,19 +97,32 @@ def insert_book_category(request):
 
 
 def valid_name(request):
+            
+    fieldValue = request.GET["field_value"]
+    bookCategoryId = request.GET["edit_id"]
         
-    field_value = request.GET["field_value"]
     action_response = {}
-    
+                
     try:
+        categoryWithSameName = BookCategory.objects.filter(category_name = fieldValue, active=True)
 
-        check_if_exists = BookCategory.objects.filter(category_name=field_value, active=True)
-       
-        if len(check_if_exists) == 0:
-            action_response['isExists'] = "false"
-        else: 
+        # When we adding new book category
+        if bookCategoryId == '':
+            if len(categoryWithSameName) == 0:
+                action_response['isExists'] = "false"
+            else: 
+                action_response['isExists'] = "true"  
+        # When we are editing book category
+        else:
+            currentCategory = BookCategory.objects.filter(id = bookCategoryId, active=True)
             action_response['isExists'] = "true"
-    
+            
+            if len(categoryWithSameName) == 0 and len(currentCategory) > 0:
+                action_response['isExists'] = "false"
+            elif len(currentCategory) > 0:
+                if currentCategory[0].id == categoryWithSameName[0].id:
+                    action_response['isExists'] = "false"
+                    
     except Exception as error:
         print error
         action_response['isExists'] = "true" #TODO: send the specific error message or it is anought?

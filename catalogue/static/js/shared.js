@@ -4,11 +4,7 @@ var modalWindow = $("#modify-window");
 
 
 $(document).ready(function() {
-    
-    /*test*/
-
-    
-    
+        
     
 	/* Modal window of ADD */
 	$("#add-btn").click(function(){
@@ -24,25 +20,29 @@ $(document).ready(function() {
     /* Modal window of EDIT */
     $(".edit-btn").click(function(){
         
+        var currentEditId = $(this).attr('id');
         var modal_title = $("#modal-title-edit-message").val();
-		$(".modal-title").text(modal_title);
+		        
+        $(".modal-title").text(modal_title);
+        $("#edit-id").val(currentEditId);
         
         modalWindow.modal();
-        
-        var currentEditId = $(this).attr('id');
-        
+                
         $.get ( "/ajax-catalogue/"+object_type+"/edit-load-data/",
             {
                 category_id:currentEditId
             },
             function ( data ) {
-                
+
                 var response = eval('(' + data + ')')[0];
                 
                 $("[name='book-category-name-txt']").val(response.fields.category_name);
                 $("[name='book-category-desc-txt']").val(response.fields.category_description);
                 $("[name='super-category-select']").val(response.fields.sub_category_of);
                 
+                $("#category_option_"+response.pk).hide();
+                
+               
             }
            
         ).error(function() {
@@ -217,12 +217,14 @@ function isFieldExists(element){
     
     var currElement = $(element);
     var fieldValue = currElement.val();
+    var currentEditId = $("#edit-id").val();
     var isFieldExists = false;
             
     $.ajaxSetup({async:false});//wait untill ajax responds
     $.get ( "/ajax-catalogue/"+object_type+"/valid-name/",
         {
-            field_value:fieldValue
+            field_value:fieldValue,
+            edit_id: currentEditId
         },
         function ( data ) {
             
@@ -253,32 +255,38 @@ function isFieldExists(element){
 
 
 /* 
-When closing modal window, all input fields should be clean
-*/
+ * When closing modal window, all input fields should be clean
+ */
 modalWindow.on("hidden.bs.modal", function () {
     
-    $("form").find("input:text,textarea,select").each(function(index){
+    $("form").find("input:text,textarea,select").each(function(index) {
        
         /* 
-        removing error shadowed fields
-        */
+         * removing error shadowed fields
+         */
         var currElement = $(this);
         var originalClass = currElement.attr('class');
         var errorClassPosition = originalClass.lastIndexOf("error-field");
-        if(errorClassPosition != -1){
+        if(errorClassPosition != -1) {
             originalClass = originalClass.substring(0,errorClassPosition-1);
             currElement.attr({'class': originalClass});
         }
         
         /* 
-        cleaning inputs
-        */
+         * cleaning inputs
+         */
         currElement.val("");
         
         /* 
-        removing popovers
-        */
+         * removing popovers
+         */
         currElement.popover("hide");
+        
+        /*
+         * in case of editiong book category we need to show
+         * hidden current book category
+         */
+        $("#super-category-select option").show();
     });
     
 });
