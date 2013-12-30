@@ -79,10 +79,17 @@ def insertBookAttribute(request):
     attributeType = BookAttributeType.objects.filter(type_name = attributeType, active = True)[0]
     bookAttributeList = BookAttribute.objects.filter(attribute_type = attributeType, active = True).order_by('-db_insert_date')
     
-    return render_to_response(
-                              'catalogue/templates/book-cover-management.html', 
+    #TODO: in case of error should redirect to error page
+    responseUrls = {"cover"     :"catalogue/templates/book-cover-management.html",
+                    "quality"   :"catalogue/templates/book-quality-management.html",
+                    "language"  :"catalogue/templates/book-language-management.html"}
+    responseResultName = {"cover"     :"book_cover_list",
+                          "quality"   :"book_quality_list",
+                          "language"  :"book_language_list"}
+
+    return render_to_response(responseUrls[str(attributeType)], 
                               {
-                               'book_cover_list': bookAttributeList, 
+                               responseResultName[str(attributeType)]: bookAttributeList, 
                                'status': statusCode,
                                'lang': RU_ru
                                })

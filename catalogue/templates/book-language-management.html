@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <title> {{ lang.page_manage_language_title }} </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+
+    <link href="/static/dist/css/bootstrap.css" rel="stylesheet" media="screen">
+    <link href="/static/dist/css/docs.css" rel="stylesheet" media="screen">
+    <link href="/static/css/style.css" rel="stylesheet" media="screen">
+
+  </head>
+      <header class="navbar navbar-fixed-top">
+         <div class="container">
+            <div class="site-title">
+                <a href="/catalogue">{{ lang.page_manage_language_banner }}</a>
+            </div>
+            <div class="row" style="text-align: right; padding:15px">
+                <a href="/catalogue/site-management/">{{ lang.page_action_enter }}</a>
+                <span>|</span>
+                <a href="#">{{ lang.page_action_basket }} </a>
+                <span class="sprite icon-basket"></span>
+            </div>
+         </div>
+      </header>
+    
+  <body>
+      <div class="container" >
+        <div style="display:none">
+            <input type="hidden" id="object-type" value="bookattribute"/>
+            <input type="hidden" id="remove-confirmation-object-name" value="{{ lang.page_manage_cover_remove_object_name }}"/>
+            <input type="hidden" id="object-exists-message" value="{{ lang.page_manage_cover_add_exists_alert }}"/>
+            <input type="hidden" id="modal-title-add-message" value="{{ lang.page_manage_cover_modal_title_add }}"/>
+            <input type="hidden" id="modal-title-edit-message" value="{{ lang.page_manage_cover_modal_title_edit }}"/>
+            <input type="hidden" id="remove-success-message" value="{{ lang.page_manage_cover_remove_success }}"/>
+            <input type="hidden" id="remove-error-message" value="{{ lang.page_manage_cover_remove_error }}"/>
+            <input type="hidden" id="error-strong-message" value="{{ lang.page_message_error }}"/>
+        </div>
+          
+    </div>
+      
+      
+  </body>
+</html>

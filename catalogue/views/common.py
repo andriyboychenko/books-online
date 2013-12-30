@@ -16,3 +16,13 @@ def covermanagement(request):
     attributeType = BookAttributeType.objects.filter(type_name = "cover", active = True)[0] #TODO: type name should be in constants
     bookCoverList = BookAttribute.objects.filter(attribute_type = attributeType, active = True).order_by('-db_insert_date')
     return render_to_response('catalogue/templates/book-cover-management.html', {'book_cover_list': bookCoverList, 'lang': RU_ru})
+
+def qualitymanagement(request):
+    attributeType = BookAttributeType.objects.filter(type_name = "quality", active = True)[0] #TODO: type name should be in constants
+    bookQualityList = BookAttribute.objects.filter(attribute_type = attributeType, active = True).order_by('-db_insert_date')
+    return render_to_response('catalogue/templates/book-quality-management.html', {'book_quality_list': bookQualityList, 'lang': RU_ru})
+
+def languagemanagement(request):
+    attributeType = BookAttributeType.objects.filter(type_name = "language", active = True)[0] #TODO: type name should be in constants
+    bookLanguageList = BookAttribute.objects.filter(attribute_type = attributeType, active = True).order_by('-db_insert_date')
+    return render_to_response('catalogue/templates/book-language-management.html', {'book_language_list': bookLanguageList, 'lang': RU_ru})

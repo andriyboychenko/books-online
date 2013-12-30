@@ -1,22 +1,20 @@
 <!DOCTYPE html>
 <html lang="ru">
   <head>
-    <title> {{lang.page_manage_cover_title}} </title>
+    <title> {{lang.page_manage_quality_title}} </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="content-type" content="text/html;charset=utf-8" />
 
     <link href="/static/dist/css/bootstrap.css" rel="stylesheet" media="screen">
     <link href="/static/dist/css/docs.css" rel="stylesheet" media="screen">
     <link href="/static/css/style.css" rel="stylesheet" media="screen">
-
   </head>
     
   <body>
-   
-     <header class="navbar navbar-fixed-top">
+      <header class="navbar navbar-fixed-top">
          <div class="container">
             <div class="site-title">
-                <a href="/catalogue">{{ lang.page_manage_cover_banner }}</a>
+                <a href="/catalogue">{{ lang.page_manage_quality_banner }}</a>
             </div>
             <div class="row" style="text-align: right; padding:15px">
                 <a href="/catalogue/site-management/">{{ lang.page_action_enter }}</a>
@@ -24,19 +22,18 @@
                 <a href="#">{{ lang.page_action_basket }} </a>
                 <span class="sprite icon-basket"></span>
             </div>
-        </div>
-    </header>
-   
-    <div class="container" >
-        
+         </div>
+     </header>
+      
+     <div class="container" >
         <div style="display:none">
             <input type="hidden" id="object-type" value="bookattribute"/>
-            <input type="hidden" id="remove-confirmation-object-name" value="{{ lang.page_manage_cover_remove_object_name }}"/>
-            <input type="hidden" id="object-exists-message" value="{{ lang.page_manage_cover_add_exists_alert }}"/>
-            <input type="hidden" id="modal-title-add-message" value="{{ lang.page_manage_cover_modal_title_add }}"/>
-            <input type="hidden" id="modal-title-edit-message" value="{{ lang.page_manage_cover_modal_title_edit }}"/>
-            <input type="hidden" id="remove-success-message" value="{{ lang.page_manage_cover_remove_success }}"/>
-            <input type="hidden" id="remove-error-message" value="{{ lang.page_manage_cover_remove_error }}"/>
+            <input type="hidden" id="remove-confirmation-object-name" value="{{ lang.page_manage_quality_remove_object_name }}"/>
+            <input type="hidden" id="object-exists-message" value="{{ lang.page_manage_quality_add_exists_alert }}"/>
+            <input type="hidden" id="modal-title-add-message" value="{{ lang.page_manage_quality_modal_title_add }}"/>
+            <input type="hidden" id="modal-title-edit-message" value="{{ lang.page_manage_quality_modal_title_edit }}"/>
+            <input type="hidden" id="remove-success-message" value="{{ lang.page_manage_quality_remove_success }}"/>
+            <input type="hidden" id="remove-error-message" value="{{ lang.page_manage_quality_remove_error }}"/>
             <input type="hidden" id="error-strong-message" value="{{ lang.page_message_error }}"/>
         </div>
         
@@ -56,10 +53,10 @@
                             
                             <div style="display:none">
                                 <input type="hidden" name="book-attribute-id" id="edit-id" value=""/>
-                                <input type="hidden" name="attribute-type" id="attribute-type" value="cover"/><!-- TODO: define in costants? -->
+                                <input type="hidden" name="attribute-type" id="attribute-type" value="quality"/><!-- TODO: define in costants? -->
                             </div>
                             
-                            <p><input type="text" class="form-control no-repeat-field" name="book-attribute-name-txt" placeholder="{{ lang.page_manage_cover_add_name_input }}" maxlength="50" data-toggle="popover" data-content data-placement="top" autocomplete="off" required></p>
+                            <p><input type="text" class="form-control no-repeat-field" name="book-attribute-name-txt" placeholder="{{ lang.page_manage_quality_add_name_input }}" maxlength="50" data-toggle="popover" data-content data-placement="top" autocomplete="off" required></p>
                             
                         </div>
                         <div class="modal-footer">
@@ -71,15 +68,9 @@
             </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
         
-            
-        
         <div class="row">
-            
-            
 			{% include "shared/admin-options.html" %}
-              
             
-        
             <div class="col-md-9 mngmt-container">
                 
                 <div class="row">
@@ -88,7 +79,7 @@
                         
                         <div class="row">
                             <div class="col-md-12">
-                                <h3>{{ lang.page_manage_cover_sub_title }}</h3>
+                                <h3>{{ lang.page_manage_quality_sub_title }}</h3>
                             </div>
                         </div>
                         
@@ -98,15 +89,17 @@
                             <div class="col-md-12">
                                 <table class="table table-condensed table-hover mngmt-table">
                                     <thead>
-                                        <th>{{ lang.page_manage_cover_name }}</th>
+                                        <th>{{ lang.page_manage_quality_name }}</th>
+                                        <th style="width:60%">{{ lang.page_manage_quality_desc }}</th>
                                         
                                         <th style="width:105px;">{{ lang.page_action_action }}</th>
                                     </thead>
                                     <tbody>
-                                        {% if book_cover_list %}
-                                            {% for cover in book_cover_list %}  
-                                                <tr id="row_{{ cover.id }}">
-                                                    <td>{{ cover.attribute_name }}</td>                                            
+                                        {% if book_quality_list %}
+                                            {% for quality in book_quality_list %}  
+                                                <tr id="row_{{ quality.id }}">
+                                                    <td>{{ quality.attribute_name }}</td>  
+                                                    <td>{{ quality.attribute_description }}</td>  
                                                     <td>
                                                         
                                                         <div class="btn-group">
@@ -114,8 +107,8 @@
                                                                 <span class="caret"></span>
                                                             </button>
                                                             <ul class="dropdown-menu pull-right">
-                                                                <li><a class="edit-btn" id="{{ cover.id }}" href="#">{{ lang.page_action_modify }}</a></li>
-                                                                <li><a class="remove-btn" id="{{ cover.id }}" href="#">{{ lang.page_action_remove }}</a></li>
+                                                                <li><a class="edit-btn" id="{{ quality.id }}" href="#">{{ lang.page_action_modify }}</a></li>
+                                                                <li><a class="remove-btn" id="{{ quality.id }}" href="#">{{ lang.page_action_remove }}</a></li>
                                                             </ul>
                                                         </div>
                                             
@@ -130,13 +123,11 @@
                     </div>
                 </div><!--row-->  
             </div>
-            
-        </div><!--row-->
-    </div>
-      
-      
-    </body>
-
+        </div><!-- row -->
+      </div>
+  </body>
+    
+    
     <script src="/static/js/jquery-1.10.2.min.js"></script>
     <script src="/static/js/jquery-ui.js"></script>
     <script src="/static/js/jquery.cookie.js"></script>
@@ -144,24 +135,20 @@
 
     
     <script type='text/javascript'>
-        
+           
         /*TODO: wrong location*/
         var object_type = $("#object-type").val();
         var success_msg = $("#remove-success-message").val();
         var error_msg = "<strong>" + $("#error-strong-message").val() + "</strong> " + $("#remove-error-message").val();
-                
+            
         $(document).ready(function() {
 			
             
-            
-			$("#admin-opt2").attr('class', 'active');
+			$("#admin-opt3").attr('class', 'active');
             
         });
         
     </script>
 
-    
-  
     <script src="/static/js/shared.js"></script>
-    
 </html>
