@@ -32,7 +32,7 @@ page_manage_category_sub_title = "Редактирование категори�
 page_manage_category_modal_title_add = "Добавить новую категорию"
 page_manage_category_modal_title_edit = "Изменить категорию"
 
-page_manage_category_name = "Название категории"
+page_manage_category_name = "Категория"
 page_manage_category_desc = "Описание категории"
 page_manage_category_super_category = "Главная категория"
 page_manage_category_it_is_main = "это главная категория"
@@ -57,14 +57,14 @@ page_manage_cover_sub_title = "Редактирование типов пере�
 page_manage_cover_modal_title_add = "Добавить новый переплёт"
 page_manage_cover_modal_title_edit = "Изменить переплёт"
 
-page_manage_cover_name = "Название переплёта"
+page_manage_cover_name = "Переплёт"
 
 page_manage_cover_remove_object_name = "переплёт"
 page_manage_cover_remove_success = "Переплёт успешно удалён."
 page_manage_cover_remove_error = "Не удалось удалить переплёт."
 
 page_manage_cover_add_exists_alert = "Переплёт с таким именем уже существует!"
-page_manage_cover_add_name_input = "Название переплёта"
+page_manage_cover_add_name_input = "Переплёт"
 
 #
 # QUALITY PAGE
@@ -76,7 +76,7 @@ page_manage_quality_sub_title = "Редактирование качества"
 page_manage_quality_modal_title_add = "Добавить новое качество"
 page_manage_quality_modal_title_edit = "Изменить качество"
 
-page_manage_quality_name = "Название качества"
+page_manage_quality_name = "Качество"
 page_manage_quality_desc = "Описание качества"
 
 page_manage_quality_remove_object_name = "качество"
@@ -84,7 +84,8 @@ page_manage_quality_remove_success = "Качество успешно удале
 page_manage_quality_remove_error = "Не удалось удалить качество."
 
 page_manage_quality_add_exists_alert = "Качество с таким именем уже существует!"
-page_manage_quality_add_name_input = "Название качества"
+page_manage_quality_add_name_input = "Качество"
+page_manage_quality_add_desc_input = "Краткое описание качества"
 
 #
 # LANGUAGE PAGE
@@ -92,3 +93,15 @@ page_manage_quality_add_name_input = "Название качества"
 page_manage_language_title = "Название твоего сайта: Редактирование языка"
 page_manage_language_banner = "Название сайта"
 page_manage_language_sub_title = "Редактирование языка"
+
+page_manage_language_modal_title_add = "Добавить новый язык"
+page_manage_language_modal_title_edit = "Изменить язык"
+
+page_manage_language_name = "Язык"
+
+page_manage_language_remove_object_name = "язык"
+page_manage_language_remove_success = "Язык успешно удалён."
+page_manage_language_remove_error = "Не удалось удалить язык."
+
+page_manage_language_add_exists_alert = "Язык с таким именем уже существует!"
+page_manage_language_add_name_input = "Язык"

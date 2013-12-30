@@ -40,10 +40,10 @@ def remove(request):
 
 def insertBookAttribute(request):
     bookAttributeNameTxt = request.POST["book-attribute-name-txt"]
-    bookAttributeDescription = "currently none"
+    bookAttributeDescription = request.POST["book-attribute-desc-txt"]
     bookAttributeId = request.POST["book-attribute-id"]
     attributeType = request.POST["attribute-type"]
-    
+        
     statusCode = 1 #1-ok, 2-warn, 3-error
     
     try:

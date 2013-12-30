@@ -43,6 +43,7 @@ $(document).ready(function () {
                         break;
                     case "bookattribute":
                         $("[name='book-attribute-name-txt']").val(response.fields.attribute_name);
+                        $("[name='book-attribute-desc-txt']").val(response.fields.attribute_description);
                         break;
                     default:
                         alert("TODO: woops!");
