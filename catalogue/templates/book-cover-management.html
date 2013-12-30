@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ru">
   <head>
-    <title> {{lang.page_manage_category_title}} </title>
+    <title> {{lang.page_manage_cover_title}} </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="content-type" content="text/html;charset=utf-8" />
 
@@ -18,7 +18,7 @@
      <header class="navbar navbar-fixed-top">
          <div class="container">
             <div class="site-title">
-                <a href="/catalogue">{{ lang.page_manage_category_banner }}</a>
+                <a href="/catalogue">{{ lang.page_manage_cover_banner }}</a>
             </div>
             <div class="row" style="text-align: right; padding:15px">
                 <a href="/catalogue/site-management/">{{ lang.page_action_enter }}</a>
@@ -32,13 +32,13 @@
     <div class="container" >
         
         <div style="display:none">
-            <input type="hidden" id="object-type" value="bookcategory"/>
-            <input type="hidden" id="remove-confirmation-object-name" value="{{ lang.page_manage_category_remove_object_name }}"/>
-            <input type="hidden" id="object-exists-message" value="{{ lang.page_manage_category_add_exists_alert }}"/>
-            <input type="hidden" id="modal-title-add-message" value="{{ lang.page_manage_category_modal_title_add }}"/>
-            <input type="hidden" id="modal-title-edit-message" value="{{ lang.page_manage_category_modal_title_edit }}"/>
-            <input type="hidden" id="remove-success-message" value="{{ lang.page_manage_category_remove_success }}"/>
-            <input type="hidden" id="remove-error-message" value="{{ lang.page_manage_category_remove_error }}"/>
+            <input type="hidden" id="object-type" value="bookattribute"/>
+            <input type="hidden" id="remove-confirmation-object-name" value="{{ lang.page_manage_cover_remove_object_name }}"/>
+            <input type="hidden" id="object-exists-message" value="{{ lang.page_manage_cover_add_exists_alert }}"/>
+            <input type="hidden" id="modal-title-add-message" value="{{ lang.page_manage_cover_modal_title_add }}"/>
+            <input type="hidden" id="modal-title-edit-message" value="{{ lang.page_manage_cover_modal_title_edit }}"/>
+            <input type="hidden" id="remove-success-message" value="{{ lang.page_manage_cover_remove_success }}"/>
+            <input type="hidden" id="remove-error-message" value="{{ lang.page_manage_cover_remove_error }}"/>
             <input type="hidden" id="error-strong-message" value="{{ lang.page_message_error }}"/>
         </div>
         
@@ -53,29 +53,15 @@
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                         <h4 class="modal-title">Modal title</h4>
                     </div>
-                    <form action="/catalogue/insert-book-category/" method="post">
+                    <form action="/catalogue/insert-book-attribute/" method="post">
                         <div class="modal-body" >
                             
                             <div style="display:none">
-                                <input type="hidden" name="book-category-id" id="edit-id" value=""/>
-                                <input type="hidden" id="attribute-type" value=""/>
+                                <input type="hidden" name="book-attribute-id" id="edit-id" value=""/>
+                                <input type="hidden" name="attribute-type" id="attribute-type" value="cover"/><!-- TODO: define in costants? -->
                             </div>
                             
-                            <p><input type="text" class="form-control no-repeat-field" name="book-category-name-txt" placeholder="{{ lang.page_manage_category_add_name_input }}" maxlength="50" data-toggle="popover" data-content data-placement="top" autocomplete="off" required></p>
-                              
-                            <p><textarea class="form-control" name="book-category-desc-txt" placeholder="{{ lang.page_manage_category_add_desc_input }}" maxlength="500" rows="3"></textarea></p>
-                            <p>{{ lang.page_manage_category_add_name_chose_super_cat }}:</p>
-                            <p>
-                                <select class="form-control" name="super-category-select" id="super-category-select" >
-                                    <option id="null"></option>
-                                    {% if book_category_list %}
-                                        {% for category in book_category_list %}  
-                                            <option id="category_option_{{ category.id }}" value="{{ category.id }}">{{ category.category_name }}</option>
-                                        {% endfor %}
-                                    {% endif %}
-                                </select>
-                            </p>
-                            <h6>{{ lang.page_manage_category_add_note_1 }}</h6>
+                            <p><input type="text" class="form-control no-repeat-field" name="book-attribute-name-txt" placeholder="{{ lang.page_manage_cover_add_name_input }}" maxlength="50" data-toggle="popover" data-content data-placement="top" autocomplete="off" required></p>
                             
                         </div>
                         <div class="modal-footer">
@@ -87,6 +73,7 @@
             </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
         
+            
         
         <div class="row">
             
@@ -103,32 +90,25 @@
                         
                         <div class="row">
                             <div class="col-md-12">
-                                <h3>{{ lang.page_manage_category_sub_title }}</h3>
+                                <h3>{{ lang.page_manage_cover_sub_title }}</h3>
                             </div>
                         </div>
                         
                         {% include "shared/admin-message-bar.html" %}
                                                 
-                        
                         <div class="row">
                             <div class="col-md-12">
                                 <table class="table table-condensed table-hover mngmt-table">
                                     <thead>
-                                        <th>{{ lang.page_manage_category_name }}</th>
-                                        <th style="width:40%">{{ lang.page_manage_category_desc }}</th>
-                                        <th>{{ lang.page_manage_category_super_category }}</th>
+                                        <th>{{ lang.page_manage_cover_name }}</th>
+                                        
                                         <th style="width:105px;">{{ lang.page_action_action }}</th>
                                     </thead>
                                     <tbody>
-                                        
-                                        {% if book_category_list %}
-                                            {% for category in book_category_list %}  
-                                                <tr id="row_{{ category.id }}">
-                                                    <td>{{ category.category_name }}</td>
-                                                    <td>{{ category.category_description }}</td>
-                                                    <td>
-                                                        {{ category.sub_category_of|default_if_none:lang.page_manage_category_it_is_main }}
-                                                    </td>
+                                        {% if book_cover_list %}
+                                            {% for cover in book_cover_list %}  
+                                                <tr id="row_{{ cover.id }}">
+                                                    <td>{{ cover.attribute_name }}</td>                                            
                                                     <td>
                                                         
                                                         <div class="btn-group">
@@ -136,8 +116,8 @@
                                                                 <span class="caret"></span>
                                                             </button>
                                                             <ul class="dropdown-menu pull-right">
-                                                                <li><a class="edit-btn" id="{{ category.id }}" href="#">{{ lang.page_action_modify }}</a></li>
-                                                                <li><a class="remove-btn" id="{{ category.id }}" href="#">{{ lang.page_action_remove }}</a></li>
+                                                                <li><a class="edit-btn" id="{{ cover.id }}" href="#">{{ lang.page_action_modify }}</a></li>
+                                                                <li><a class="remove-btn" id="{{ cover.id }}" href="#">{{ lang.page_action_remove }}</a></li>
                                                             </ul>
                                                         </div>
                                             
@@ -152,7 +132,6 @@
                     </div>
                 </div><!--row-->  
             </div>
-            
             
         </div><!--row-->
     </div>
@@ -174,11 +153,12 @@
         var success_msg = $("#remove-success-message").val();
         var error_msg = "<strong>" + $("#error-strong-message").val() + "</strong> " + $("#remove-error-message").val();
                 
+
         
         
         $(document).ready(function() {
 			
-			$("#admin-opt1").attr('class', 'active');
+			$("#admin-opt2").attr('class', 'active');
             
         });
         

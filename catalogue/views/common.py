@@ -1,13 +1,18 @@
 from django.shortcuts import render_to_response
 
-from catalogue.models import BookCategory
+from catalogue.models import BookCategory, BookAttribute, BookAttributeType
 from catalogue.entities import RU_ru
 
 
 def index(request):
-    book_category_list = BookCategory.objects.filter(active=True).order_by('category_name')
-    return render_to_response('catalogue/templates/index.html', {'book_category_list': book_category_list})
+    bookCategoryList = BookCategory.objects.filter(active=True).order_by('category_name')
+    return render_to_response('catalogue/templates/index.html', {'book_category_list': bookCategoryList})
 
 def sitemanagement(request):#its temporary, shold be replated with google oauth2
-    book_category_list = BookCategory.objects.filter(active=True).order_by('category_name')
-    return render_to_response('catalogue/templates/site-management.html', {'book_category_list': book_category_list, 'lang': RU_ru})
+    bookCategoryList = BookCategory.objects.filter(active=True).order_by('-db_insert_date')
+    return render_to_response('catalogue/templates/site-management.html', {'book_category_list': bookCategoryList, 'lang': RU_ru})
+
+def covermanagement(request):
+    attributeType = BookAttributeType.objects.filter(type_name = "cover", active = True)[0] #TODO: type name should be in constants
+    bookCoverList = BookAttribute.objects.filter(attribute_type = attributeType, active = True).order_by('-db_insert_date')
+    return render_to_response('catalogue/templates/book-cover-management.html', {'book_cover_list': bookCoverList, 'lang': RU_ru})

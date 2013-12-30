@@ -28,9 +28,20 @@ class BookCategory(models.Model):
     active = models.BooleanField(default=1)
     def __unicode__(self):
         return self.category_name
+ 
+class BookAttributeType(models.Model):
+    type_name = models.CharField(max_length=50)
+    db_insert_date = models.DateTimeField('date published')
+    db_modify_date = models.DateTimeField('date published')
+    db_modify_user = models.ForeignKey(User)
+    active = models.BooleanField(default=1)
+    def __unicode__(self):
+        return self.type_name
     
-class BookCover(models.Model):
-    cover_name = models.CharField(max_length=50)
+class BookAttribute(models.Model):
+    attribute_name = models.CharField(max_length=50)
+    attribute_type = models.ForeignKey(BookAttributeType)
+    attribute_description = models.CharField(max_length=500)
     db_insert_date = models.DateTimeField('date published')
     db_modify_date = models.DateTimeField('date published')
     db_modify_user = models.ForeignKey(User)
@@ -38,21 +49,4 @@ class BookCover(models.Model):
     def __unicode__(self):
         return self.cover_name
     
-class BookQuality(models.Model):
-    quality_name = models.CharField(max_length=50)
-    quality_description = models.CharField(max_length=500)
-    db_insert_date = models.DateTimeField('date published')
-    db_modify_date = models.DateTimeField('date published')
-    db_modify_user = models.ForeignKey(User)
-    active = models.BooleanField(default=1)
-    def __unicode__(self):
-        return self.quality_name
 
-class BookLanguage(models.Model):
-    language_name = models.CharField(max_length=50)
-    db_insert_date = models.DateTimeField('date published')
-    db_modify_date = models.DateTimeField('date published')
-    db_modify_user = models.ForeignKey(User)
-    active = models.BooleanField(default=1)
-    def __unicode__(self):
-        return self.language_nameh

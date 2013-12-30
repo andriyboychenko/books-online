@@ -1,13 +1,11 @@
-var alertMessageElement = $(".alert");
-var modalWindow = $("#modify-window");
 
-
-
-$(document).ready(function() {
+$(document).ready(function () {
         
+    var alertMessageElement = $(".alert");
+    var modalWindow = $("#modify-window");
     
 	/* Modal window of ADD */
-	$("#add-btn").click(function(){
+	$("#add-btn").click(function () {
         
         var modal_title = $("#modal-title-add-message").val();
 		$(".modal-title").text(modal_title);
@@ -18,7 +16,7 @@ $(document).ready(function() {
     
     
     /* Modal window of EDIT */
-    $(".edit-btn").click(function(){
+    $(".edit-btn").click(function () {
         
         var currentEditId = $(this).attr('id');
         var modal_title = $("#modal-title-edit-message").val();
@@ -28,27 +26,32 @@ $(document).ready(function() {
         
         modalWindow.modal();
                 
-        $.get ( "/ajax-catalogue/"+object_type+"/edit-load-data/",
+        $.get("/ajax-catalogue/" + object_type + "/edit-load-data/",
             {
-                category_id:currentEditId
+                current_id: currentEditId
             },
-            function ( data ) {
+            function (data) {
 
                 var response = eval('(' + data + ')')[0];
                 
-                $("[name='book-category-name-txt']").val(response.fields.category_name);
-                $("[name='book-category-desc-txt']").val(response.fields.category_description);
-                $("[name='super-category-select']").val(response.fields.sub_category_of);
-                
-                $("#category_option_"+response.pk).hide();
+                switch (object_type) {
+                    case "bookcategory":
+                        $("[name='book-category-name-txt']").val(response.fields.category_name);
+                        $("[name='book-category-desc-txt']").val(response.fields.category_description);
+                        $("[name='super-category-select']").val(response.fields.sub_category_of);
+                        $("#category_option_" + response.pk).hide();
+                        break;
+                    case "bookattribute":
+                        $("[name='book-attribute-name-txt']").val(response.fields.attribute_name);
+                        break;
+                    default:
+                        alert("TODO: woops!");
+                        break;
+                }
                 
                
-            }
-           
-        ).error(function() {
-            alert('woops!'); 
-        });
-        
+            })
+        .error(function () {alert('TODO: woops!'); });
     });
     
     
@@ -56,7 +59,7 @@ $(document).ready(function() {
     /*
     Save object inserted in modal window 
     */
-    $("#save-object").click(function(event){
+    $("#save-object").click(function (event) {
                 
         var invalidInputs = 0;
         
@@ -88,8 +91,8 @@ $(document).ready(function() {
                     */
                     if(currElement.attr('class').lastIndexOf("no-repeat-field") != -1){
                 
-                        if( isFieldExists(this) ){
-                            invalidInputs ++;
+                        if(isFieldExists(this)){
+                            invalidInputs += 1;
                         }
                         
                     }
@@ -124,6 +127,7 @@ $(document).ready(function() {
 
     /* ------- Remove object -----------*/
     var currentRemoveId;
+    var attributeType = $("#attribute-type").val();
 	$(".remove-btn").click(function (){
         
         currentRemoveId = $(this).attr('id');
@@ -142,7 +146,8 @@ $(document).ready(function() {
             
         $.post( "/ajax-catalogue/"+object_type+"/remove/", 
             {
-                object_id:currentRemoveId
+                object_id:currentRemoveId,
+                attribute_type:attributeType
             },   
             function( data ) {
                 var response = eval('(' + data + ')');
@@ -172,7 +177,43 @@ $(document).ready(function() {
     });
         
     
+    /* 
+     * When closing modal window, all input fields should be clean
+     */
+    modalWindow.on("hidden.bs.modal", function () {
+        
+        $("form").find("input:text,textarea,select").each(function(index) {
+           
+            /* 
+             * removing error shadowed fields
+             */
+            var currElement = $(this);
+            var originalClass = currElement.attr('class');
+            var errorClassPosition = originalClass.lastIndexOf("error-field");
+            if(errorClassPosition != -1) {
+                originalClass = originalClass.substring(0,errorClassPosition-1);
+                currElement.attr({'class': originalClass});
+            }
             
+            /* 
+             * cleaning inputs
+             */
+            currElement.val("");
+            
+            /* 
+             * removing popovers
+             */
+            currElement.popover("hide");
+            
+            /*
+             * in case of editiong book category we need to show
+             * hidden current book category
+             */
+            $("#super-category-select option").show();
+        });
+        
+    });
+       
 
 });
 
@@ -218,13 +259,15 @@ function isFieldExists(element){
     var currElement = $(element);
     var fieldValue = currElement.val();
     var currentEditId = $("#edit-id").val();
+    var attributeType = $("#attribute-type").val();
     var isFieldExists = false;
             
     $.ajaxSetup({async:false});//wait untill ajax responds
     $.get ( "/ajax-catalogue/"+object_type+"/valid-name/",
         {
-            field_value:fieldValue,
-            edit_id: currentEditId
+            field_value: fieldValue,
+            edit_id: currentEditId,
+            attribute_type: attributeType
         },
         function ( data ) {
             
@@ -254,41 +297,5 @@ function isFieldExists(element){
 }
 
 
-/* 
- * When closing modal window, all input fields should be clean
- */
-modalWindow.on("hidden.bs.modal", function () {
-    
-    $("form").find("input:text,textarea,select").each(function(index) {
-       
-        /* 
-         * removing error shadowed fields
-         */
-        var currElement = $(this);
-        var originalClass = currElement.attr('class');
-        var errorClassPosition = originalClass.lastIndexOf("error-field");
-        if(errorClassPosition != -1) {
-            originalClass = originalClass.substring(0,errorClassPosition-1);
-            currElement.attr({'class': originalClass});
-        }
-        
-        /* 
-         * cleaning inputs
-         */
-        currElement.val("");
-        
-        /* 
-         * removing popovers
-         */
-        currElement.popover("hide");
-        
-        /*
-         * in case of editiong book category we need to show
-         * hidden current book category
-         */
-        $("#super-category-select option").show();
-    });
-    
-});
 
 

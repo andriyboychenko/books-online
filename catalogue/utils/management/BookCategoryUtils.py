@@ -7,14 +7,17 @@ log = logging.getLogger("django")
 
 class BookCategoryUtils:
     
-    def removeCategory(self, bookCategoryId):
+    def removeCategory(self, bookCategoryId, modifyUser):
         bookCategory = BookCategory.objects.filter(id=bookCategoryId)
         
         if len(bookCategory) > 0:
             bookCategory[0].active = False
+            bookCategory[0].modifyUser = modifyUser
             bookCategory[0].save()
         else:
-            log.error("Cannot remove new category. Category no more longger exists")
+            log.warning("Cannot remove category. Category no more longger exists")
+            return False
+        return True
         
         
         
@@ -43,14 +46,15 @@ class BookCategoryUtils:
                       db_modify_date = timezone.now(), 
                       db_modify_user = modifyUser)
                 else:
-                    log.error("Cannot insert new category. Super category no more longger exists")
+                    log.warning("Cannot insert new category. Super category no more longger exists")
+                    return False
 
             category.save()
         else:
-            log.error("Cannot insert new category. Category exits")
-            
+            log.warning("Cannot insert new category. Category with same name already exits")
+            return False
+        return True    
 
-            
             
             
     def modifyCategory(self, bookCategoryId, bookCategoryName, bookCategoryDesc, superCategoryId, modifyUser):
@@ -58,9 +62,9 @@ class BookCategoryUtils:
         categoryWithSameName = BookCategory.objects.filter(category_name = bookCategoryName, active = True)
         
         canProceed = False
-        if len(categoryWithSameName) == 0 and len(currentCategory) > 0:
+        if len(categoryWithSameName) == 0:
             canProceed = True
-        elif len(currentCategory) > 0:
+        elif len(currentCategory) > 0 and len(categoryWithSameName) > 0:
             if currentCategory[0].id == categoryWithSameName[0].id:
                 canProceed = True
                 
@@ -73,7 +77,7 @@ class BookCategoryUtils:
                 currentCategory[0].modifyUser = modifyUser
             else:
                 currentCategory[0].category_name = bookCategoryName
-                currentCategory[0].category_descriptio = bookCategoryDesc
+                currentCategory[0].category_description = bookCategoryDesc
                 currentCategory[0].sub_category_of = superCategoryId
                 currentCategory[0].db_modify_date = timezone.now()
                 currentCategory[0].modifyUser = modifyUser
@@ -81,7 +85,10 @@ class BookCategoryUtils:
             currentCategory[0].save() 
             
         else:
-            log.error("Cannot modify new category. Category exits")
+            log.warning("Cannot modify new category. Category with same name already exits")
+            return False
+        return True
+            
             
             
             

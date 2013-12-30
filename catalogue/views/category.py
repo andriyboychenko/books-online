@@ -1,9 +1,9 @@
+import logging
+
 from django.shortcuts import render_to_response
-from django.utils import timezone
 from django.http import HttpResponse
 from django.utils import simplejson as json
 from django.core import serializers
-
 
 from catalogue.entities import ResponseMessages
 from catalogue.utils.management.BookCategoryUtils import BookCategoryUtils
@@ -11,42 +11,34 @@ from catalogue.utils.management.BookCategoryUtils import BookCategoryUtils
 from catalogue.models import BookCategory, User
 from catalogue.entities import RU_ru
 
-def bookdetail(request, book_id):
-    #https://docs.djangoproject.com/en/1.4/intro/tutorial03/#raising-404
-    try:
-        print "do nothing"
-        #p = Poll.objects.get(pk=poll_id)
-    except Poll.DoesNotExist:
-        raise Http404
-    return render_to_response('catalogue/templates/detail.html', {'poll': p})
-
+log = logging.getLogger("django")
 
 def remove(request):
     object_id = request.POST["object_id"]
-    
     action_response = {}
     
     try:
-        categoryUtils = BookCategoryUtils()
-        categoryUtils.removeCategory(object_id)
-        action_response['status'] = 1 #1-ok, 2-warn, 3-error
+        users = User.objects.filter(id=1) #TODO: hardcoded
+        
+        if len(users) > 0:
+            modifyUser = users[0]
+                        
+            categoryUtils = BookCategoryUtils()
+            isRemoved = categoryUtils.removeCategory(object_id, modifyUser)
+            if isRemoved:
+                action_response['status'] = 1 #1-ok, 2-warn, 3-error
+            else:
+                action_response['status'] = 3 #1-ok, 2-warn, 3-error
         
     except Exception as error:
         log.error(error)
         action_response['status'] = 3
-    
-    
     
     response_data = json.dumps(action_response)
     response = HttpResponse()
     response.write(response_data)
     
     return response
-
-#
-#TODO: https://docs.djangoproject.com/en/dev/topics/forms/
-#reposts on refresh should be avoided
-#
 
 
 def insert_book_category(request):
@@ -68,24 +60,29 @@ def insert_book_category(request):
             
             # Modify book category
             if len(book_category_id) > 0:
-                categoryUtils.modifyCategory(
+                isModified = categoryUtils.modifyCategory(
                                  book_category_id,
                                  book_category_name_txt,
                                  book_category_desc_txt,
                                  super_category_select,
                                  modify_user)
+                if not isModified:
+                    status_code = 3
+                    
             # Add new book category
             else:
-                categoryUtils.addNewCategory(book_category_name_txt,
+                isInserted = categoryUtils.addNewCategory(book_category_name_txt,
                                  book_category_desc_txt,
                                  super_category_select,
                                  modify_user)
+                if not isInserted:
+                    status_code = 3
                 
     except Exception as error:
         log.error(error)
         status_code = 3
         
-    book_category_list = BookCategory.objects.filter(active=True).order_by('category_name')
+    book_category_list = BookCategory.objects.filter(active=True).order_by('-db_insert_date')
     
     return render_to_response(
                               'catalogue/templates/site-management.html', 
@@ -118,7 +115,7 @@ def valid_name(request):
             currentCategory = BookCategory.objects.filter(id = bookCategoryId, active=True)
             action_response['isExists'] = "true"
             
-            if len(categoryWithSameName) == 0 and len(currentCategory) > 0:
+            if len(categoryWithSameName) == 0:
                 action_response['isExists'] = "false"
             elif len(currentCategory) > 0:
                 if currentCategory[0].id == categoryWithSameName[0].id:
@@ -138,7 +135,7 @@ def valid_name(request):
 
 def edit_load_data(request):
     
-    categoryId = request.GET["category_id"]
+    categoryId = request.GET["current_id"]
     action_response = {}
     
     try:
