@@ -54,15 +54,12 @@ class BookAttributeUtils:
                 canProceed = True
              
         if canProceed:
-            print bookAttributeName
-            print bookAttributeDescription
-            print modifyUser
-            currentAttribute[0].attribute_name = bookAttributeName
-            currentAttribute[0].attribute_description = bookAttributeDescription
-            currentAttribute[0].db_modify_date = timezone.now()
-            currentAttribute[0].modifyUser = modifyUser
-            currentAttribute[0].save() 
-            
+            attribute = currentAttribute[0]
+            attribute.attribute_name = bookAttributeName
+            attribute.attribute_description = bookAttributeDescription
+            attribute.db_modify_date = timezone.now()
+            attribute.modifyUser = modifyUser
+            attribute.save()
         else:
             log.warning("Cannot modify new category. Category with same name already exits")
             return False

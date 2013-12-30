@@ -69,20 +69,22 @@ class BookCategoryUtils:
                 canProceed = True
                 
         if canProceed:
+            category = currentCategory[0]
+            
             #User haven't selected super category
             if len(superCategoryId) == 0:
-                currentCategory[0].category_name = bookCategoryName
-                currentCategory[0].category_description = bookCategoryDesc
-                currentCategory[0].db_modify_date = timezone.now()
-                currentCategory[0].modifyUser = modifyUser
+                category.category_name = bookCategoryName
+                category.category_description = bookCategoryDesc
+                category.db_modify_date = timezone.now()
+                category.modifyUser = modifyUser
             else:
-                currentCategory[0].category_name = bookCategoryName
-                currentCategory[0].category_description = bookCategoryDesc
-                currentCategory[0].sub_category_of = superCategoryId
-                currentCategory[0].db_modify_date = timezone.now()
-                currentCategory[0].modifyUser = modifyUser
+                category.category_name = bookCategoryName
+                category.category_description = bookCategoryDesc
+                category.sub_category_of = superCategoryId
+                category.db_modify_date = timezone.now()
+                category.modifyUser = modifyUser
             
-            currentCategory[0].save() 
+            category.save() 
             
         else:
             log.warning("Cannot modify new category. Category with same name already exits")

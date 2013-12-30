@@ -53,7 +53,7 @@ def insertBookAttribute(request):
             modifyUser = users[0]     
             attributesUtils = BookAttributeUtils()
             
-            # Modify cover type
+            # Modify attribute
             if len(bookAttributeId) > 0:
                 isModified = attributesUtils.modifyAttribute(
                                  bookAttributeId,
@@ -63,7 +63,7 @@ def insertBookAttribute(request):
                 if not isModified:
                     statusCode = 3
                     
-            # Add new cover type
+            # Add new attribute
             else:
                 isInserted = attributesUtils.addNewAttribute(bookAttributeNameTxt,
                                 bookAttributeDescription,

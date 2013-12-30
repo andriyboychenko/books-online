@@ -47,6 +47,6 @@ class BookAttribute(models.Model):
     db_modify_user = models.ForeignKey(User)
     active = models.BooleanField(default=1)
     def __unicode__(self):
-        return self.cover_name
+        return self.attribute_name
     
 
