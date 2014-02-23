@@ -105,3 +105,10 @@ page_manage_language_remove_error = "Не удалось удалить язык
 
 page_manage_language_add_exists_alert = "Язык с таким именем уже существует!"
 page_manage_language_add_name_input = "Язык"
+
+#
+# BOOKS PAGE
+#
+page_manage_book_title = "Название твоего сайта: Редактирование книг"
+page_manage_book_banner = "Название сайта"
+page_manage_book_sub_title = "Редактирование книг"

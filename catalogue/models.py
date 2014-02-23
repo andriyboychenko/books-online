@@ -49,4 +49,22 @@ class BookAttribute(models.Model):
     def __unicode__(self):
         return self.attribute_name
     
+class BookItem(models.Model):
+    book_name = models.CharField(max_length=200)
+    book_author = models.CharField(max_length=100)
+    book_description = models.CharField(max_length=1000)
+    book_category = models.ForeignKey(BookCategory)
+    book_cover = models.ForeignKey(BookAttribute, related_name='book_cover')
+    book_quality = models.ForeignKey(BookAttribute, related_name='book_quality')
+    book_language = models.ForeignKey(BookAttribute, related_name='book_language')
+    book_price = models.DecimalField(max_digits=10, decimal_places=2)
+    view_counter = models.BigIntegerField()
+    search_hits_counter = models.BigIntegerField()
+    db_insert_date = models.DateTimeField('date published')
+    db_modify_date = models.DateTimeField('date published')
+    db_modify_user = models.ForeignKey(User)
+    active = models.BooleanField(default=1)
+    def __unicode__(self):
+        return self.book_name
+    
 

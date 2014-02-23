@@ -10,6 +10,7 @@ urlpatterns = patterns('catalogue.views',
     url(r'^catalogue/cover-management/$', 'common.covermanagement'),
     url(r'^catalogue/quality-management/$', 'common.qualitymanagement'),
     url(r'^catalogue/language-management/$', 'common.languagemanagement'),
+    url(r'^catalogue/book-management/$', 'common.bookmanagement'),
     url(r'^catalogue/insert-book-category/$', 'category.insert_book_category'),
     url(r'^catalogue/insert-book-attribute/$', 'bookattribute.insertBookAttribute'),
     
