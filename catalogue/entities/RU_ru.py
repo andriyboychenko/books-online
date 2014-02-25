@@ -112,3 +112,17 @@ page_manage_language_add_name_input = "Язык"
 page_manage_book_title = "Название твоего сайта: Редактирование книг"
 page_manage_book_banner = "Название сайта"
 page_manage_book_sub_title = "Редактирование книг"
+
+page_manage_book_modal_title_add = "Добавить новую книгу"
+page_manage_book_modal_title_edit = "Изменить данные книги"
+
+page_manage_book_add_name_input = "Название книги"
+page_manage_book_add_author_input = "Автор"
+page_manage_book_add_desc_input = "Описание книги"
+page_manage_book_add_name_chose_category = "Категория"
+page_manage_book_add_name_chose_cover = "Переплёт"
+page_manage_book_add_name_chose_quality = "Качество"
+page_manage_book_add_name_chose_language = "Язык"
+page_manage_book_add_price_input = "Цена книги в формате ####.##"
+page_manage_book_add_currency_input = "грн."
+

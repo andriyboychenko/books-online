@@ -9,7 +9,7 @@ $(document).ready(function () {
         
         var modal_title = $("#modal-title-add-message").val();
 		$(".modal-title").text(modal_title);
-        
+
         modalWindow.modal();
         
 	});
