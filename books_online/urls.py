@@ -13,6 +13,7 @@ urlpatterns = patterns('catalogue.views',
     url(r'^catalogue/book-management/$', 'common.bookmanagement'),
     url(r'^catalogue/insert-book-category/$', 'category.insert_book_category'),
     url(r'^catalogue/insert-book-attribute/$', 'bookattribute.insertBookAttribute'),
+    url(r'^catalogue/insert-book/$', 'book.insertBook'),
     
     url(r'^catalogue/(?P<book_id>\d+)/$', 'bookdetail'),
 

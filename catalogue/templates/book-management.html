@@ -41,14 +41,14 @@
             
             {% include "shared/admin-remove-confirm.html" %}
             
-            <div class="modal fade" id="modify-window" data-backdrop="static" data-keyboard="false">
+            <div class="modal fade" id="modify-window" data-backdrop="static" data-keyboard="false" style="overflow-y:scroll;">
                 <div class="modal-dialog">
-                    <div class="modal-content">
+                    <div class="modal-content" >
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                             <h4 class="modal-title">Modal title</h4>
                         </div>
-                        <form action="/catalogue/insert-book-attribute/" method="post">
+                        <form action="/catalogue/insert-book/" enctype="multipart/form-data"  method="post">
                             <div class="modal-body" >
                                 
                                 <div style="display:none">
@@ -119,12 +119,32 @@
                                     </div>
                                 </div></p>
                 
-                                <p><input type="text" class="form-control no-repeat-field" name="book-price-txt" placeholder="{{ lang.page_manage_book_add_price_input }} {{ lang.page_manage_book_add_currency_input }} " maxlength="50" data-toggle="popover" data-content data-placement="top" autocomplete="off" required> </p>
+                                <p><input type="text" class="form-control no-repeat-field" name="book-price-txt" placeholder="{{ lang.page_manage_book_add_price_input }} {{ lang.page_manage_book_add_currency_input }} " maxlength="10" data-toggle="popover" data-content data-placement="top" autocomplete="off" required> </p>
+                
+                                <p><input type="text" class="form-control no-repeat-field" name="book-discount-txt" placeholder="{{ lang.page_manage_book_add_discount_input }} {{ lang.page_manage_book_add_currency_input }} " maxlength="10" autocomplete="off"> </p>
+                
+                                <p><div class="row">
+                                    <div class="col-md-5">
+                                        {{ lang.page_manage_book_add_priory_check }}
+                                    </div>
+                                    
+                                    <div class="col-md-7">
+                                        <input type="checkbox" name="book-is-with-priority">
+                                    </div>
+                                </div></p>
+                                                
+                                <p><div class="row">
+                                    <div class="col-md-5">
+                                        {{ lang.page_manage_book_add_upload_files }}
+                                    </div>
+                                    
+                                    <div class="col-md-7">
+                                        <input type="file" multiple="multiple">
+                                    </div>
+                                </div></p>
+                
+                                 
                                                             
-                                <!--scroll test-->
-<!--
-                                <br><br><br><br><br><br><br><br><br>
--->
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-default" data-dismiss="modal">{{ lang.page_action_cancel }}</button>

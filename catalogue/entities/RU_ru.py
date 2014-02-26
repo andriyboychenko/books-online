@@ -124,5 +124,9 @@ page_manage_book_add_name_chose_cover = "Переплёт"
 page_manage_book_add_name_chose_quality = "Качество"
 page_manage_book_add_name_chose_language = "Язык"
 page_manage_book_add_price_input = "Цена книги в формате ####.##"
+page_manage_book_add_discount_input = "Скидка на книгу в формате ####.##"
 page_manage_book_add_currency_input = "грн."
+page_manage_book_add_priory_check = "Выделить эту книгу"
+page_manage_book_add_upload_files = "Загрузить фотографии книг"
+
 
