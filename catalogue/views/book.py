@@ -1,10 +1,10 @@
 import logging
 
+from django.shortcuts import render_to_response
 from catalogue.entities import RU_ru
 
-from .forms import UploadFileForm
-
 log = logging.getLogger("django")
+
 
 
 def insertBook(request):
@@ -21,18 +21,23 @@ def insertBook(request):
     bookPriceTxt = request.POST["book-price-txt"]
     bookDiscountTxt = request.POST["book-discount-txt"]
     
-    bookIsPrioritized = request.POST["book-is-with-priority"]
+    bookIsPrioritized = False
+    if "book-is-with-priority" in request.POST.keys():
+        bookIsPrioritized = True
     
-    print "bookIsPrioritized "+bookIsPrioritized
+    bookUploadedImages = request.FILES.getlist('file')
+    
+    #https://docs.djangoproject.com/en/dev/topics/http/file-uploads/
+    for uploadedImage in bookUploadedImages:
+        with open('/home/andriy/Pictures/books-test/'+str(uploadedImage), 'wb+') as destination:
+            for chunk in uploadedImage.chunks():
+                destination.write(chunk)
+    
+    
     
     #book_category_id = request.POST["book-category-id"]
     
-    if request.method == 'POST':
-        form = UploadFileForm(request.POST, request.FILES)
-        if form.is_valid():
-            print request.FILES['file']
-            #https://docs.djangoproject.com/en/dev/topics/http/file-uploads/
-            #handle_uploaded_file(request.FILES['file'])
+    
         
     
     return render_to_response(
