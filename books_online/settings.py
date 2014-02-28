@@ -187,3 +187,6 @@ LOGGING = {
 
     }
 }
+
+ALLOWED_IMAGE_UPLOAD = ['image/jpeg','image/jpg','image/png']
+ALLOWED_IMAGE_SIZE = 51200 #400 Kb

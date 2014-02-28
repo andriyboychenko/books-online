@@ -1,9 +1,12 @@
 import logging
 
 from django.shortcuts import render_to_response
+from django.conf import settings
 from catalogue.entities import RU_ru
 
+
 log = logging.getLogger("django")
+
 
 
 
@@ -22,18 +25,30 @@ def insertBook(request):
     bookDiscountTxt = request.POST["book-discount-txt"]
     
     bookIsPrioritized = False
-    if "book-is-with-priority" in request.POST.keys():
+    if "book-is-with-priority" in request.POST.keys():$
         bookIsPrioritized = True
     
     bookUploadedImages = request.FILES.getlist('file')
     
-    #https://docs.djangoproject.com/en/dev/topics/http/file-uploads/
-    for uploadedImage in bookUploadedImages:
-        with open('/home/andriy/Pictures/books-test/'+str(uploadedImage), 'wb+') as destination:
-            for chunk in uploadedImage.chunks():
-                destination.write(chunk)
+    status_code = 1 #1-ok, 2-warn, 3-error
     
+    try:
     
+        for uploadedImage in bookUploadedImages:
+            if uploadedImage.content_type in settings.ALLOWED_IMAGE_UPLOAD:
+                if uploadedImage._size < settings.ALLOWED_IMAGE_SIZE:
+                    with open('/home/andriy/Pictures/books-test/'+str(uploadedImage), 'wb+') as destination:
+                        for chunk in uploadedImage.chunks():
+                            destination.write(chunk)
+                else:
+                    print "Wrong size!!"
+            else: 
+                print "Wrong format"
+     
+    except Exception as error:
+        log.error(error)
+        status_code = 3
+        
     
     #book_category_id = request.POST["book-category-id"]
     
