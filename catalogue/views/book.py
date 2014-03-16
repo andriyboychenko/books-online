@@ -1,13 +1,14 @@
 import logging
 
 from django.shortcuts import render_to_response
+from django.utils import simplejson as json
 from django.conf import settings
 from catalogue.entities import RU_ru
-
+from catalogue.entities.ResponseMessage import ResponseMessage
+from catalogue.models import User
+from catalogue.utils.management.BookUtils import BookUtils
 
 log = logging.getLogger("django")
-
-
 
 
 def insertBook(request):
@@ -24,34 +25,68 @@ def insertBook(request):
     bookPriceTxt = request.POST["book-price-txt"]
     bookDiscountTxt = request.POST["book-discount-txt"]
     
-    bookIsPrioritized = False
-    if "book-is-with-priority" in request.POST.keys():$
-        bookIsPrioritized = True
+    bookNotable = False
+    if "book-is-with-priority" in request.POST.keys():
+        bookNotable = True
     
     bookUploadedImages = request.FILES.getlist('file')
     
-    status_code = 1 #1-ok, 2-warn, 3-error
+    bookId = request.POST["book-id"]
     
+    
+    status_code = 1 #1-ok, 2-warn, 3-error ---------------------
+    
+    resp = ResponseMessage(1,"success")
+
     try:
-    
+        
+        bookImagesNames = []
+        
         for uploadedImage in bookUploadedImages:
             if uploadedImage.content_type in settings.ALLOWED_IMAGE_UPLOAD:
                 if uploadedImage._size < settings.ALLOWED_IMAGE_SIZE:
-                    with open('/home/andriy/Pictures/books-test/'+str(uploadedImage), 'wb+') as destination:
+                    
+                    # Uploading image to the server
+                    with open(settings.UPLOAD_FOLDER + str(uploadedImage), 'wb+') as destination:
+                        bookImagesNames.append(str(uploadedImage))
                         for chunk in uploadedImage.chunks():
                             destination.write(chunk)
+                     
                 else:
+                    resp = ResponseMessage(3,"wrong-image-size")
                     print "Wrong size!!"
+                    break
             else: 
+                resp = ResponseMessage(3,"wrong-image-format")
                 print "Wrong format"
-     
-    except Exception as error:
-        log.error(error)
-        status_code = 3
+                break
+            
+        # Inserting other book data only if image data is correct if it is exists
+        if resp.getErrorCode() == 1 or not bookUploadedImages:
+            
+            users = User.objects.filter(id=1) #TODO: hardcoded
         
+            if len(users) > 0:
+                modifyUser = users[0]
+                            
+                bookUtils = BookUtils()
+                
+                # Modify book category
+                if len(bookId) > 0:
+                    print "tmp------------"
+                    
+                # Add new book category
+                else:
+                    resp = bookUtils.addNewBook(bookNameTxt, bookAuthorTxt, bookDescriptionTxt, bookCategorySelect, 
+                            bookCoverSelect, bookQualitySelect, bookLanguageSelect, bookPriceTxt, 
+                            bookDiscountTxt, bookNotable, settings.UPLOAD_FOLDER, bookImagesNames, modifyUser)
+                            
+    except Exception as error:
+        ResponseMessage(3,"internal-error")
+        log.error(error)
+ 
     
-    #book_category_id = request.POST["book-category-id"]
-    
+   
     
         
     
@@ -60,5 +95,6 @@ def insertBook(request):
                               {
                                #'book_category_list': book_category_list, 
                                #'status': status_code,
+                               'ResponseMessage': ResponseMessage,
                                'lang': RU_ru
                                })

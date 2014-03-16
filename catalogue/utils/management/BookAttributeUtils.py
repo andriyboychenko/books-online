@@ -42,7 +42,6 @@ class BookAttributeUtils:
             
         
     def modifyAttribute(self, bookAttributeId, bookAttributeName, bookAttributeDescription, modifyUser):
-        print bookAttributeId
         currentAttribute = BookAttribute.objects.filter(id = bookAttributeId, active = True)
         attributeWithSameName = BookAttribute.objects.filter(attribute_name = bookAttributeName, active = True)
         
