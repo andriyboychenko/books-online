@@ -190,4 +190,5 @@ LOGGING = {
 
 ALLOWED_IMAGE_UPLOAD = ['image/jpeg','image/jpg','image/png']
 ALLOWED_IMAGE_SIZE = 409600 #400 Kb
+ALLOWED_IMAGE_QUANT = 5
 UPLOAD_FOLDER = '/home/andriy/Pictures/books-test/'

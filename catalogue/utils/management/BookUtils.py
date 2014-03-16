@@ -21,7 +21,6 @@ class BookUtils:
         
         if bookActiveCategory and bookActiveCover and bookActiveQuality and bookActiveLanguage:
             
-            
             book = BookItem(
                   book_name = bookName,
                   book_author = bookAuthor,
@@ -40,7 +39,9 @@ class BookUtils:
                   db_modify_user = modifyUser)
             book.save()
             return ResponseMessage(1, "success")
+        
         else:    
+            log.error("Something went wrong while was inserting book to database")
             return ResponseMessage(3, "error-inserting-to-database")
         
    

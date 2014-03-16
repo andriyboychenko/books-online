@@ -2,6 +2,8 @@ import logging
 
 from django.shortcuts import render_to_response
 from django.utils import simplejson as json
+from datetime import datetime
+from random import randint
 from django.conf import settings
 from catalogue.entities import RU_ru
 from catalogue.entities.ResponseMessage import ResponseMessage
@@ -41,25 +43,41 @@ def insertBook(request):
     try:
         
         bookImagesNames = []
+        imageCounter = 1
         
         for uploadedImage in bookUploadedImages:
+            
+            # Setting image name: <current date including milliseconds>+<random number>
+            currDate = datetime.today()
+            imgNewName = currDate.strftime("%Y%m%d%H%M%S%f") + str(randint(0,9))
+            imgOldName = str(uploadedImage)
+            imgName = imgNewName + imgOldName[imgOldName.index("."):]
+                    
             if uploadedImage.content_type in settings.ALLOWED_IMAGE_UPLOAD:
                 if uploadedImage._size < settings.ALLOWED_IMAGE_SIZE:
                     
                     # Uploading image to the server
-                    with open(settings.UPLOAD_FOLDER + str(uploadedImage), 'wb+') as destination:
-                        bookImagesNames.append(str(uploadedImage))
+                    with open(settings.UPLOAD_FOLDER + imgName, 'wb+') as destination:
+                        bookImagesNames.append(imgName)
                         for chunk in uploadedImage.chunks():
                             destination.write(chunk)
+                            
+                    # It's allowod to upload only 15 valid images per book
+                    if imageCounter >= settings.ALLOWED_IMAGE_QUANT:
+                        resp = ResponseMessage(2, "wrong-image-quantity")
+                        log.warning("Wrong image quantity! Only %d images are allowed. Other images will be discarded" % settings.ALLOWED_IMAGE_QUANT)
+                        break;
+                        
+                    imageCounter += 1
                      
                 else:
                     resp = ResponseMessage(3,"wrong-image-size")
-                    print "Wrong size!!"
-                    break
+                    log.warning("Wrong image size! Only %d KB images are allowed. The image %s will be discarded" %
+                                ((settings.ALLOWED_IMAGE_SIZE / 1024), imgOldName) )
             else: 
                 resp = ResponseMessage(3,"wrong-image-format")
-                print "Wrong format"
-                break
+                log.warning("Wrong image size! Only JPG and PNG images are allowed. The image %s will be discarded" % (imgOldName) )
+            
             
         # Inserting other book data only if image data is correct if it is exists
         if resp.getErrorCode() == 1 or not bookUploadedImages:
