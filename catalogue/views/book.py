@@ -1,5 +1,7 @@
 import logging
 
+import StringIO
+from PIL import Image, ImageOps
 from django.shortcuts import render_to_response
 from django.utils import simplejson as json
 from datetime import datetime
@@ -52,15 +54,47 @@ def insertBook(request):
             imgNewName = currDate.strftime("%Y%m%d%H%M%S%f") + str(randint(0,9))
             imgOldName = str(uploadedImage)
             imgName = imgNewName + imgOldName[imgOldName.index("."):]
+            imgNewNameThumb = imgNewName + "-thumbnail" + imgOldName[imgOldName.index("."):]
                     
             if uploadedImage.content_type in settings.ALLOWED_IMAGE_UPLOAD:
                 if uploadedImage._size < settings.ALLOWED_IMAGE_SIZE:
                     
                     # Uploading image to the server
-                    with open(settings.UPLOAD_FOLDER + imgName, 'wb+') as destination:
-                        bookImagesNames.append(imgName)
-                        for chunk in uploadedImage.chunks():
-                            destination.write(chunk)
+                    bookImagesNames.append(imgName)
+                    imageStr = ""
+                    for chunk in uploadedImage.chunks():
+                        imageStr += chunk
+                        
+                    imagefile  = StringIO.StringIO(imageStr)
+                    image = Image.open(imagefile)
+                    (width, height) = image.size
+                        
+                    #checking image resolution
+                    resizingFactor = 1
+                    if (settings.ALLOWED_MAX_IMAGE_RESOLUTION[0]/width < settings.ALLOWED_MAX_IMAGE_RESOLUTION[1]/height):
+                        resizingFactor = float(settings.ALLOWED_MAX_IMAGE_RESOLUTION[1])/float(height)
+                    else:
+                        resizingFactor = float(settings.ALLOWED_MAX_IMAGE_RESOLUTION[0])/float(width)
+                    
+                    if (resizingFactor < 1):
+                        newSize = ( int(width * resizingFactor), int(height * resizingFactor))
+                        image = image.resize(newSize, Image.ANTIALIAS)
+                        
+                    image.save(settings.UPLOAD_FOLDER + imgName)
+                    
+                    #generating image thumbnail
+                    resizingFactorThumb = 1
+                    if (settings.IMAGE_THUMBNAIL[0]/width < settings.IMAGE_THUMBNAIL[1]/height):
+                        resizingFactorThumb = float(settings.IMAGE_THUMBNAIL[1])/float(height)
+                    else:
+                        resizingFactorThumb = float(settings.IMAGE_THUMBNAIL[0])/float(width)
+                        
+                    if (resizingFactorThumb < 1):
+                        newSize = ( int(width * resizingFactorThumb), int(height * resizingFactorThumb))
+                        image.thumbnail(newSize, Image.ANTIALIAS)
+                    
+                    image.save(settings.UPLOAD_FOLDER + imgNewNameThumb)
+                    
                             
                     # It's allowod to upload only 15 valid images per book
                     if imageCounter >= settings.ALLOWED_IMAGE_QUANT:
@@ -101,7 +135,7 @@ def insertBook(request):
                             
     except Exception as error:
         ResponseMessage(3,"internal-error")
-        log.error(error)
+        log.exception(error)
  
     
    
