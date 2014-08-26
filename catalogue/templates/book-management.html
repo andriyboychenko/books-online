@@ -58,6 +58,50 @@
                             </div>
                             
                             {% include "shared/admin-message-bar.html" %}
+                            
+                            
+                            
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <table class="table table-condensed table-hover mngmt-table">
+                                        <thead>
+                                            <th>{{ lang.page_manage_cover_name }}</th>
+                                            
+                                            <th style="width:105px;">{{ lang.page_action_action }}</th>
+                                        </thead>
+                                        <tbody>
+                                            {% if book_list %}
+                                                {% for book in book_list %}  
+                                                    
+                                                    <tr id="row_{{ book.book_uuid }}">
+                                                        <td>
+                                                        
+                                                            <a class="thumbnail">
+                                                                <img style="width: 75px; height: 95px;" src="{{ book.book_images_path }}{{book.book_thumbnail}}">
+                                                            </a>
+                                                        
+                                                        </td>                                            
+                                                        <td>
+                                                            
+                                                            <div class="btn-group">
+                                                                <button class="btn btn-xs dropdown-toggle" data-toggle="dropdown" style="width:100px;">
+                                                                    <span class="caret"></span>
+                                                                </button>
+                                                                <ul class="dropdown-menu pull-right">
+                                                                    <li><a class="edit-btn" id="{{ book.book_uuid }}" href="#">{{ lang.page_action_modify }}</a></li>
+                                                                    <li><a class="remove-btn" id="{{ book.book_uuid }}" href="#">{{ lang.page_action_remove }}</a></li>
+                                                                </ul>
+                                                            </div>
+                                                
+                                                        </td>
+                                                        </tr>
+                                            
+                                                {% endfor %}
+                                            {% endif %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

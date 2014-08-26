@@ -1,6 +1,6 @@
 from django.shortcuts import render_to_response
 
-from catalogue.models import BookCategory, BookAttribute, BookAttributeType
+from catalogue.models import BookItem, BookCategory, BookAttribute, BookAttributeType
 from catalogue.entities import RU_ru
 
 
@@ -37,7 +37,7 @@ def languagemanagement(request):
                                'lang': RU_ru})
 
 def bookmanagement(request):
-    #TODO: get book list
+    bookItemList = BookItem.objects.filter(active=True).order_by('-db_insert_date')
     bookCategoryList = BookCategory.objects.filter(active=True).order_by('-db_insert_date')
     
     #TODO: type name should be in constants
@@ -49,7 +49,7 @@ def bookmanagement(request):
     bookLanguageList = BookAttribute.objects.filter(attribute_type = attributeTypeLanguage, active = True).order_by('-db_insert_date')
 
     return render_to_response('catalogue/templates/book-management.html', 
-                                {'book_list': None, 
+                                {'book_list': bookItemList, 
                                 'book_category_list': bookCategoryList,
                                 'book_cover_list': bookCoverList,
                                 'book_quality_list': bookQualityList, 

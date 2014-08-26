@@ -1,5 +1,7 @@
 import logging
 
+import os
+import uuid
 import StringIO
 from PIL import Image, ImageOps
 from django.shortcuts import render_to_response
@@ -16,6 +18,10 @@ log = logging.getLogger("django")
 
 
 def insertBook(request):
+    
+    bookUUIDVal =  uuid.uuid4()
+
+    imagePath = settings.UPLOAD_FOLDER
 
     bookNameTxt = request.POST["book-name-txt"]
     bookAuthorTxt = request.POST["book-author-txt"]
@@ -55,6 +61,12 @@ def insertBook(request):
             imgOldName = str(uploadedImage)
             imgName = imgNewName + imgOldName[imgOldName.index("."):]
             imgNewNameThumb = imgNewName + "-thumbnail" + imgOldName[imgOldName.index("."):]
+            imagePath = imagePath + str(currDate.year) + "/" + str(currDate.month) + "/" + str(currDate.day) + "/"
+            
+            # Images are stored in YYYY/MM/DD folder structure
+            print imagePath
+            if not os.path.exists(imagePath):
+                os.makedirs(imagePath)
                     
             if uploadedImage.content_type in settings.ALLOWED_IMAGE_UPLOAD:
                 if uploadedImage._size < settings.ALLOWED_IMAGE_SIZE:
@@ -80,7 +92,7 @@ def insertBook(request):
                         newSize = ( int(width * resizingFactor), int(height * resizingFactor))
                         image = image.resize(newSize, Image.ANTIALIAS)
                         
-                    image.save(settings.UPLOAD_FOLDER + imgName)
+                    image.save(imagePath + imgName)
                     
                     #generating image thumbnail
                     resizingFactorThumb = 1
@@ -93,8 +105,12 @@ def insertBook(request):
                         newSize = ( int(width * resizingFactorThumb), int(height * resizingFactorThumb))
                         image.thumbnail(newSize, Image.ANTIALIAS)
                     
-                    image.save(settings.UPLOAD_FOLDER + imgNewNameThumb)
+                    image.save(imagePath + imgNewNameThumb)
                     
+                    # When a new book is added with images, only the first image is defined as thumbnail. 
+                    # Thumbnail can be chnaged in book item modification
+                    if (imageCounter == 1):
+                        bookThumbnail = imgNewNameThumb
                             
                     # It's allowod to upload only 15 valid images per book
                     if imageCounter >= settings.ALLOWED_IMAGE_QUANT:
@@ -129,9 +145,9 @@ def insertBook(request):
                     
                 # Add new book category
                 else:
-                    resp = bookUtils.addNewBook(bookNameTxt, bookAuthorTxt, bookDescriptionTxt, bookCategorySelect, 
+                    resp = bookUtils.addNewBook(bookUUIDVal, bookNameTxt, bookAuthorTxt, bookDescriptionTxt, bookCategorySelect, 
                             bookCoverSelect, bookQualitySelect, bookLanguageSelect, bookPriceTxt, 
-                            bookDiscountTxt, bookNotable, settings.UPLOAD_FOLDER, bookImagesNames, modifyUser)
+                            bookDiscountTxt, bookNotable, imagePath, bookImagesNames, bookThumbnail, modifyUser)
                             
     except Exception as error:
         ResponseMessage(3,"internal-error")

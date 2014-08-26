@@ -10,9 +10,9 @@ class BookUtils:
     def removeBook(self, bookCategoryId, modifyUser):
         print "----"
         
-    def addNewBook(self, bookName, bookAuthor, bookDesc, bookCategory, 
+    def addNewBook(self, bookUUIDVal, bookName, bookAuthor, bookDesc, bookCategory, 
                    bookCover, bookQuality, bookLanguage, bookPrice, 
-                   bookDiscount, bookNotable, bookImagesUrl, bookImagesNames, modifyUser):
+                   bookDiscount, bookNotable, bookImagesUrl, bookImagesNames, bookThumbnail, modifyUser):
         
         bookActiveCategory = BookCategory.objects.filter(id = bookCategory, active = True)
         bookActiveCover = BookAttribute.objects.filter(id = bookCover, active = True)
@@ -22,6 +22,7 @@ class BookUtils:
         if bookActiveCategory and bookActiveCover and bookActiveQuality and bookActiveLanguage:
             
             book = BookItem(
+                  book_uuid = bookUUIDVal,
                   book_name = bookName,
                   book_author = bookAuthor,
                   book_description = bookDesc,
@@ -34,6 +35,7 @@ class BookUtils:
                   is_notable = bookNotable,
                   book_images_path = bookImagesUrl,
                   book_images_names = bookImagesNames,
+                  book_thumbnail = bookThumbnail,
                   db_insert_date = timezone.now(), 
                   db_modify_date = timezone.now(), 
                   db_modify_user = modifyUser)

@@ -48,6 +48,7 @@ class BookAttribute(models.Model):
         return self.attribute_name
     
 class BookItem(models.Model):
+    book_uuid = models.CharField(max_length=40)
     book_name = models.CharField(max_length=200)
     book_author = models.CharField(max_length=100)
     book_description = models.CharField(null=True, max_length=1000)
@@ -60,6 +61,7 @@ class BookItem(models.Model):
     is_notable = models.BooleanField(default=0)
     book_images_path = models.CharField(null=True, max_length=200)
     book_images_names = models.CharField(null=True, max_length=1000)
+    book_thumbnail = models.CharField(null=True, max_length=30)
     view_counter = models.BigIntegerField(null=True, default=0)
     search_hits_counter = models.BigIntegerField(null=True, default=0)
     db_insert_date = models.DateTimeField('date published')
