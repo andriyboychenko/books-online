@@ -113,8 +113,8 @@ page_manage_book_title = "Название твоего сайта: Редакт
 page_manage_book_banner = "Название сайта"
 page_manage_book_sub_title = "Редактирование книг"
 
-page_manage_book_modal_title_add = "Добавить новую книгу"
-page_manage_book_modal_title_edit = "Изменить данные книги"
+page_manage_book_title_add = "Добавить новую книгу"
+page_manage_book_title_edit = "Изменить данные книги"
 
 page_manage_book_add_name_input = "Название книги"
 page_manage_book_add_author_input = "Автор"

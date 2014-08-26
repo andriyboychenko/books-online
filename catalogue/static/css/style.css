@@ -183,3 +183,7 @@ div#remove-confirmation-window{
 div#modify-window{
     overflow-y:hidden;
 }
+
+div.add-book-form-container {
+    margin-top:20px;
+}

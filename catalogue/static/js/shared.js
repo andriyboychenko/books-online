@@ -8,10 +8,15 @@ $(document).ready(function () {
 	$("#add-btn").click(function () {
         
         var modal_title = $("#modal-title-add-message").val();
-		$(".modal-title").text(modal_title);
 
-        modalWindow.modal();
+        /* some pages do not have add/edit modal windows, for example book-management*/
+        if (modal_title === "false") {
+            return false;            
+        }
         
+        $(".modal-title").text(modal_title);
+        modalWindow.modal();
+                        
 	});
     
     
@@ -20,7 +25,11 @@ $(document).ready(function () {
         
         var currentEditId = $(this).attr('id');
         var modal_title = $("#modal-title-edit-message").val();
-		        
+        
+        if (modal_title === "false") {
+            return false;            
+        }
+        		        
         $(".modal-title").text(modal_title);
         $("#edit-id").val(currentEditId);
         
@@ -61,14 +70,13 @@ $(document).ready(function () {
     Save object inserted in modal window 
     */
     $("#save-object").click(function (event) {
-                
+                        
         var invalidInputs = 0;
-        
+                
         $("form").find("input:text,textarea,select").each(function(index){ 
              
             var currElement = $(this); 
         
-            
             /*
             In case of input:text and textareas the value is saved
             In case of select the option id is saved
@@ -79,7 +87,7 @@ $(document).ready(function () {
                 if(currElement.attr("required") === "required"){
                     isValid = validateInput(this, false);
                 }
-                
+
                 /*
                 It does not make sense to perform ajax request if input is empty
                 */
