@@ -1,4 +1,6 @@
 from django.conf.urls import patterns, include, url
+from django.conf import settings
+from django.conf.urls.static import static
 
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
@@ -29,7 +31,8 @@ urlpatterns = patterns('catalogue.views',
     url(r'^ajax-catalogue/bookcategory/valid-name/$',           'category.valid_name'),
     url(r'^ajax-catalogue/bookattribute/valid-name/$',          'bookattribute.validName'),
     
-    
+    (r'^media/(?P<path>.*)$', 'django.views.static.serve', {
+        'document_root': settings.MEDIA_ROOT}),
     
     # Examples:
     # url(r'^$', 'books_online.views.home', name='home'),

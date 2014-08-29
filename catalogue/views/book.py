@@ -61,7 +61,8 @@ def insertBook(request):
             imgOldName = str(uploadedImage)
             imgName = imgNewName + imgOldName[imgOldName.index("."):]
             imgNewNameThumb = imgNewName + "-thumbnail" + imgOldName[imgOldName.index("."):]
-            imagePath = imagePath + str(currDate.year) + "/" + str(currDate.month) + "/" + str(currDate.day) + "/"
+            imageDynamicPath = str(currDate.year) + "/" + str(currDate.month) + "/" + str(currDate.day) + "/"
+            imagePath = imagePath + imageDynamicPath
             
             # Images are stored in YYYY/MM/DD folder structure
             print imagePath
@@ -147,7 +148,7 @@ def insertBook(request):
                 else:
                     resp = bookUtils.addNewBook(bookUUIDVal, bookNameTxt, bookAuthorTxt, bookDescriptionTxt, bookCategorySelect, 
                             bookCoverSelect, bookQualitySelect, bookLanguageSelect, bookPriceTxt, 
-                            bookDiscountTxt, bookNotable, imagePath, bookImagesNames, bookThumbnail, modifyUser)
+                            bookDiscountTxt, bookNotable, imageDynamicPath, bookImagesNames, bookThumbnail, modifyUser)
                             
     except Exception as error:
         ResponseMessage(3,"internal-error")
