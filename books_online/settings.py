@@ -1,6 +1,15 @@
 # Django settings for books_online project.
 import os 
 
+ALLOWED_IMAGE_UPLOAD = ['image/jpeg','image/jpg','image/png']
+ALLOWED_IMAGE_SIZE = 5242880 #5Mb
+#ALLOWED_IMAGE_SIZE = 409600 #400 Kb
+ALLOWED_MAX_IMAGE_RESOLUTION = (700, 350)
+IMAGE_THUMBNAIL = (75, 75)
+ALLOWED_IMAGE_QUANT = 5
+UPLOAD_FOLDER = '/home/andriy/Pictures/books-test/'
+
+
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -73,8 +82,8 @@ STATIC_URL = '/static/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
-    os.path.join('/home/andriy/Pictures/books-test/', "static"),
-    '/home/andriy/Pictures/books-test/',
+    os.path.join(UPLOAD_FOLDER, "static"),
+    UPLOAD_FOLDER,
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
@@ -191,10 +200,3 @@ LOGGING = {
     }
 }
 
-ALLOWED_IMAGE_UPLOAD = ['image/jpeg','image/jpg','image/png']
-ALLOWED_IMAGE_SIZE = 5242880 #5Mb
-#ALLOWED_IMAGE_SIZE = 409600 #400 Kb
-ALLOWED_MAX_IMAGE_RESOLUTION = (700, 350)
-IMAGE_THUMBNAIL = (75, 75)
-ALLOWED_IMAGE_QUANT = 5
-UPLOAD_FOLDER = '/home/andriy/Pictures/books-test/'

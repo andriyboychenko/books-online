@@ -6,7 +6,7 @@ from catalogue.models import BookCategory, BookAttribute, BookAttributeType, Boo
 
 log = logging.getLogger("django")
 
-class BookUtils:
+class BookDAO:
     def removeBook(self, bookCategoryId, modifyUser):
         print "----"
         
