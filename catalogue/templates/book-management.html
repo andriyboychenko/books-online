@@ -75,13 +75,27 @@
                                                     
                                                     <tr id="row_{{ book.book_uuid }}">
                                                         <td>
-                                                        
-                                                            <a class="thumbnail">
-                                                                {% load staticfiles %}
-                                                                <img style="width: 75px; height: 95px;" src="{% static ''%}{{book.book_images_path}}{{book.book_thumbnail}}">
-                                                                
-                                                            </a>
-                                                        
+                                                            <div class="row">
+                                                                <div class="col-md-3" style="height: 125px;">
+                                                                    <a class="thumbnail image-container">
+                                                                        {% load staticfiles %}
+                                                                        <img class="image-centered" src="{% static ''%}{{ book.book_images_path }}{{ book.book_thumbnail }}">
+                                                                    </a>
+                                                                </div>
+                                                                <div class="col-md-9">
+                                                                    <h4 class="incomplete-text" title="{{ book.book_name }}">{{ book.book_name }}</h4>
+                                                                    <p class="incomplete-text" title="{{ book.book_author }}">{{ book.book_author }}</p>
+                                                                    <p> {{ lang.page_manage_book_add_price_label }} : 
+                                                                        {{ book.book_price }}
+                                                                        {{ lang.page_manage_book_add_currency_input }}
+                                                                    </p>
+                                                                    <p>
+                                                                        {{ lang.page_manage_book_reference_num_label }} : 
+                                                                        {{ book.book_uuid }}
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                            
                                                         </td>                                            
                                                         <td>
                                                             
@@ -96,7 +110,7 @@
                                                             </div>
                                                 
                                                         </td>
-                                                        </tr>
+                                                    </tr>
                                             
                                                 {% endfor %}
                                             {% endif %}

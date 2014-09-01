@@ -19,7 +19,7 @@ log = logging.getLogger("django")
 
 def insertBook(request):
     
-    bookUUIDVal =  uuid.uuid4()
+    bookUUIDVal = str(uuid.uuid1())[:13]
 
     bookNameTxt = request.POST["book-name-txt"]
     bookAuthorTxt = request.POST["book-author-txt"]

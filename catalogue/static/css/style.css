@@ -187,3 +187,22 @@ div#modify-window{
 div.add-book-form-container {
     margin-top:20px;
 }
+
+a.image-container {
+    min-width: 125px;
+    min-height: 125px;
+}
+    img.image-centered {
+        position: absolute;
+        top: 0; 
+        bottom:0; 
+        left: 0; 
+        right:0;
+        margin: auto;
+    }
+
+.incomplete-text{
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis;
+}
