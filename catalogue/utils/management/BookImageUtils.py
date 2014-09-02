@@ -48,10 +48,10 @@ class BookImageUtils:
         
         #checking image resolution
         resizingFactor = 1
-        if (maxWidth/width < maxHeight/height):
-            resizingFactor = float(maxHeight)/float(height)
-        else:
+        if (float(maxWidth)/float(width) < float(maxHeight)/float(height)):
             resizingFactor = float(maxWidth)/float(width)
+        else:
+            resizingFactor = float(maxHeight)/float(height)
                     
         if (resizingFactor < 1):
             newSize = ( int(width * resizingFactor), int(height * resizingFactor) )
