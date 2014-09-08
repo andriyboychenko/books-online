@@ -130,6 +130,8 @@ page_manage_book_add_currency_input = "грн."
 page_manage_book_add_priory_check = "Выделить эту книгу"
 page_manage_book_add_upload_files = "Загрузить фотографии книг"
 
+page_manage_book_name = "Список книг"
+
 page_manage_book_remove_object_name = "книгу"
 page_manage_book_remove_success = "Книга успешно удалена."
 page_manage_book_remove_error = "Не удалось удалить книгу."

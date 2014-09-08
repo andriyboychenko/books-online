@@ -29,7 +29,7 @@ def remove(request):
             modifyUser = users[0]
                                     
             bookDAO = BookDAO()
-            isRemoved = bookDAO.removeBook(object_id, modifyUser)
+            isRemoved = bookDAO.removeBook(object_id, True, modifyUser)
             if isRemoved:
                 action_response['status'] = 1 #1-ok, 2-warn, 3-error
             else:
@@ -78,6 +78,8 @@ def insertBook(request):
     try:
         
         bookImagesNames = []
+        bookThumbnail = ""
+        bookDynamicPath = ""
         imageCounter = 1
         currDate = datetime.today()
         
@@ -95,6 +97,8 @@ def insertBook(request):
                     # Thumbnail can be chnaged in book item modification
                     if (imageCounter == 1):
                         bookImageUtils.generateThumnail()
+                        bookThumbnail = bookImageUtils.imgNewNameThumb
+                        bookDynamicPath = bookImageUtils.imageDynamicPath
                                                 
                     # It's allowod to upload only 15 valid images per book
                     if imageCounter >= settings.ALLOWED_IMAGE_QUANT:
@@ -132,8 +136,8 @@ def insertBook(request):
                 else:
                     resp = bookDAO.addNewBook(bookUUIDVal, bookNameTxt, bookAuthorTxt, bookDescriptionTxt, bookCategorySelect, 
                             bookCoverSelect, bookQualitySelect, bookLanguageSelect, bookPriceTxt, 
-                            bookDiscountTxt, bookNotable, bookImageUtils.imageDynamicPath, bookImagesNames,
-                            bookImageUtils.imgNewNameThumb, modifyUser)
+                            bookDiscountTxt, bookNotable, bookDynamicPath, bookImagesNames,
+                            bookThumbnail, modifyUser)
                             
     except Exception as error:
         ResponseMessage(3,"internal-error")
