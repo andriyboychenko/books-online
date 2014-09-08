@@ -1,5 +1,12 @@
 
 $(document).ready(function () {
+    
+    $(".image-centered").error(function () { 
+        $(this).hide(); 
+        
+        var rowId = $(this).parent().parent().parent().parent().parent().attr('id');
+        $("#" + rowId + " > td > div > div > a > .no-image").show();
+    });
         
     var alertMessageElement = $(".alert");
     var modalWindow = $("#modify-window");
@@ -181,7 +188,10 @@ $(document).ready(function () {
                 
                 }
             }
-        );
+        ).fail(function(error) { 
+            $("#error-message > span").html(error_msg);
+            $("#error-message").show();    
+        });
         
     });
         

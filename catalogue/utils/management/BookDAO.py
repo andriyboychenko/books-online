@@ -7,9 +7,20 @@ from catalogue.models import BookCategory, BookAttribute, BookAttributeType, Boo
 log = logging.getLogger("django")
 
 class BookDAO:
-    def removeBook(self, bookCategoryId, modifyUser):
-        print "----"
+    def removeBook(self, bookItemId, modifyUser):
         
+        bookItem = BookItem.objects.filter(book_uuid=bookItemId)
+        
+        if len(bookItem) > 0:
+            bookItem[0].active = False
+            bookItem[0].modifyUser = modifyUser
+            bookItem[0].save()
+        else:
+            log.warning("Cannot remove category. Category no more longger exists")
+            return False
+        return True
+
+    
     def addNewBook(self, bookUUIDVal, bookName, bookAuthor, bookDesc, bookCategory, 
                    bookCover, bookQuality, bookLanguage, bookPrice, 
                    bookDiscount, bookNotable, bookImagesUrl, bookImagesNames, bookThumbnail, modifyUser):

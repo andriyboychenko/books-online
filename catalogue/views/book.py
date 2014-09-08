@@ -5,6 +5,7 @@ import uuid
 import StringIO
 from PIL import Image, ImageOps
 from django.shortcuts import render_to_response
+from django.http import HttpResponse
 from django.utils import simplejson as json
 from datetime import datetime
 from django.conf import settings
@@ -13,8 +14,36 @@ from catalogue.entities.ResponseMessage import ResponseMessage
 from catalogue.models import User
 from catalogue.utils.management.BookDAO import BookDAO
 from catalogue.utils.management.BookImageUtils import BookImageUtils
+from catalogue.models import BookItem
 
 log = logging.getLogger("django")
+
+def remove(request):
+    object_id = request.POST["object_id"]
+    action_response = {}
+    
+    try:
+        users = User.objects.filter(id=1) #TODO: hardcoded
+        
+        if len(users) > 0:
+            modifyUser = users[0]
+                                    
+            bookDAO = BookDAO()
+            isRemoved = bookDAO.removeBook(object_id, modifyUser)
+            if isRemoved:
+                action_response['status'] = 1 #1-ok, 2-warn, 3-error
+            else:
+                action_response['status'] = 3 #1-ok, 2-warn, 3-error
+        
+    except Exception as error:
+        log.error(error)
+        action_response['status'] = 3
+    
+    response_data = json.dumps(action_response)
+    response = HttpResponse()
+    response.write(response_data)
+    
+    return response
 
 
 def insertBook(request):
@@ -111,14 +140,14 @@ def insertBook(request):
         log.exception(error)
  
     
-   
+    bookItemList = BookItem.objects.filter(active=True).order_by('-db_insert_date')
     
         
     
     return render_to_response(
                               'catalogue/templates/book-management.html', 
                               {
-                               #'book_category_list': book_category_list, 
+                               'book_list': bookItemList, 
                                #'status': status_code,
                                'ResponseMessage': ResponseMessage,
                                'lang': RU_ru

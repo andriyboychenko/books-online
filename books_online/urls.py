@@ -26,6 +26,7 @@ urlpatterns = patterns('catalogue.views',
     #AJAX
     url(r'^ajax-catalogue/bookcategory/remove/$',               'category.remove'),
     url(r'^ajax-catalogue/bookattribute/remove/$',              'bookattribute.remove'),
+    url(r'^ajax-catalogue/bookitem/remove/$',                   'book.remove'),
     url(r'^ajax-catalogue/bookcategory/edit-load-data/$',       'category.edit_load_data'),
     url(r'^ajax-catalogue/bookattribute/edit-load-data/$',      'bookattribute.loadEditData'),
     url(r'^ajax-catalogue/bookcategory/valid-name/$',           'category.valid_name'),

@@ -67,19 +67,16 @@ table#tbl-book-list {
         }
 
 
-/*----------------SPRITES----------------*/
+/*----------------SPRITES----------------
+    http://cssglobe.com/creating-easy-and-useful-css-sprites/
+*/
 
-.sprite{
-		background-image: url("../img/site-icons.jpg");
-		position:absolute;
-        width:14px;
-        height:14px;
-	}
-	.icon-basket {
-        background-position: -425px -140px;
-        margin-left:5px;
-        margin-top:3px;
-    }
+.sprite{background-image: url("../img/sprite.png");}
+    
+    .error-img {max-height: 115px;}
+
+        .no-image {width: 123px; background-position: 0px -15px;}
+
 
 /*----------------SITE TITLE----------------*/
 div.site-title a{
@@ -206,3 +203,4 @@ a.image-container {
     overflow: hidden; 
     text-overflow: ellipsis;
 }
+

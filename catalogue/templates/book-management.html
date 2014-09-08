@@ -28,15 +28,15 @@
         <div class="container" >
             <div style="display:none">
                 <input type="hidden" id="object-type" value="bookitem"/>
-                <!--<input type="hidden" id="remove-confirmation-object-name" value="{{ lang.page_manage_language_remove_object_name }}"/>-->
+                <input type="hidden" id="remove-confirmation-object-name" value="{{ lang.page_manage_book_remove_object_name }}"/>
 <!--
                 <input type="hidden" id="object-exists-message" value="{{ lang.page_manage_language_add_exists_alert }}"/>
 -->
                 <input type="hidden" id="modal-title-add-message" value="false"/> <!-- do not open a modal window -->
                 <input type="hidden" id="modal-title-edit-message" value="false"/>
-                <!--<input type="hidden" id="remove-success-message" value="{{ lang.page_manage_language_remove_success }}"/>
-                <input type="hidden" id="remove-error-message" value="{{ lang.page_manage_language_remove_error }}"/>
-                <input type="hidden" id="error-strong-message" value="{{ lang.page_message_error }}"/>-->
+                <input type="hidden" id="remove-success-message" value="{{ lang.page_manage_book_remove_success }}"/>
+                <input type="hidden" id="remove-error-message" value="{{ lang.page_manage_book_remove_error }}"/>
+                <input type="hidden" id="error-strong-message" value="{{ lang.page_message_error }}"/>
             </div>
             
             {% include "shared/admin-remove-confirm.html" %}
@@ -80,6 +80,7 @@
                                                                     <a class="thumbnail image-container">
                                                                         {% load staticfiles %}
                                                                         <img class="image-centered" src="{% static ''%}{{ book.book_images_path }}{{ book.book_thumbnail }}">
+                                                                        <img class="image-centered sprite error-img no-image" src="/static/img/transparent.gif" style="display: none;">
                                                                     </a>
                                                                 </div>
                                                                 <div class="col-md-9">
