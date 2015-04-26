@@ -68,9 +68,31 @@ def bookaddnew(request):
     bookLanguageList = BookAttribute.objects.filter(attribute_type = attributeTypeLanguage, active = True).order_by('-db_insert_date')
 
     return render_to_response('catalogue/templates/book-add-new.html', 
-                                {'book_list': None, 
+                                {
                                 'book_category_list': bookCategoryList,
                                 'book_cover_list': bookCoverList,
                                 'book_quality_list': bookQualityList, 
                                 'book_language_list': bookLanguageList, 
                                 'lang': RU_ru})
+
+def bookedit(request, bookid):
+    
+    bookCategoryList = BookCategory.objects.filter(active=True).order_by('-db_insert_date')
+    
+    #TODO: type name should be in constants
+    bookitem = BookItem.objects.filter(book_uuid = bookid, active = True)[0]
+    attributeTypeCover = BookAttributeType.objects.filter(type_name = "cover", active = True)[0] 
+    attributeTypeQuality = BookAttributeType.objects.filter(type_name = "quality", active = True)[0] 
+    attributeTypeLanguage = BookAttributeType.objects.filter(type_name = "language", active = True)[0] 
+    bookCoverList = BookAttribute.objects.filter(attribute_type = attributeTypeCover, active = True).order_by('-db_insert_date')
+    bookQualityList = BookAttribute.objects.filter(attribute_type = attributeTypeQuality, active = True).order_by('-db_insert_date')
+    bookLanguageList = BookAttribute.objects.filter(attribute_type = attributeTypeLanguage, active = True).order_by('-db_insert_date')
+        
+    return render_to_response('catalogue/templates/book-add-new.html', 
+                                {'book_item': bookitem, 
+                                'book_category_list': bookCategoryList,
+                                'book_cover_list': bookCoverList,
+                                'book_quality_list': bookQualityList, 
+                                'book_language_list': bookLanguageList, 
+                                'lang': RU_ru})
+    

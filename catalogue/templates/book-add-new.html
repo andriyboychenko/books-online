@@ -1,7 +1,13 @@
 <!DOCTYPE html>
 <html lang="ru">
     <head>
-        <title> {{ lang.page_manage_book_title }} </title>
+        <title> 
+            {% if book_item %}
+                {{ lang.page_manage_book_title }} - {{ lang.page_manage_book_title_edit}}
+            {% else %}
+                {{ lang.page_manage_book_title }} - {{ lang.page_manage_book_title_add}}
+            {% endif %}
+        </title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="content-type" content="text/html;charset=utf-8" />
 
@@ -42,7 +48,11 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <h3>
-                                        {{ lang.page_manage_book_title_add }}
+                                        {% if book_item %}
+                                            {{ lang.page_manage_book_title_edit}}
+                                        {% else %}
+                                            {{ lang.page_manage_book_title_add}}
+                                        {% endif %}
                                     </h3> 
                                 </div>
                             </div>
@@ -52,12 +62,12 @@
                                 <form action="/catalogue/insert-book/" enctype="multipart/form-data"  method="post">
                                 
                                     <div style="display:none">
-                                        <input type="hidden" name="book-id" id="edit-id" value=""/>
+                                        <input type="hidden" name="book-id" id="edit-id" value="{{ book_item.book_uuid }}"/>
                                         <input type="hidden" name="attribute-type" id="attribute-type" value="language"/><!-- TODO: define in costants? -->
                                     </div>
                                     
-                                    <p><input type="text" class="form-control" name="book-name-txt" placeholder="{{ lang.page_manage_book_add_name_input }}" maxlength="50" data-toggle="popover" data-content data-placement="top" autocomplete="off" required></p>
-                                    <p><input type="text" class="form-control" name="book-author-txt" placeholder="{{ lang.page_manage_book_add_author_input }}" maxlength="50" data-toggle="popover" data-content data-placement="top" autocomplete="off" required></p>
+                                    <p><input type="text" class="form-control" name="book-name-txt" placeholder="{{ lang.page_manage_book_add_name_input }}" maxlength="50" data-toggle="popover" data-content data-placement="top" autocomplete="off" value="{{ book_item.book_name }}" required></p>
+                                    <p><input type="text" class="form-control" name="book-author-txt" placeholder="{{ lang.page_manage_book_add_author_input }}" maxlength="50" data-toggle="popover" data-content data-placement="top" autocomplete="off" value="{{ book_item.book_author }}" required></p>
                                     
                                     <p><textarea class="form-control" name="book-desc-txt" placeholder="{{ lang.page_manage_book_add_desc_input }}" maxlength="500" rows="3"></textarea></p>
                                     
@@ -70,7 +80,11 @@
                                             <select class="form-control" name="category-select" id="category-select" >
                                                 {% if book_category_list %}
                                                     {% for category in book_category_list %}  
-                                                        <option id="category_option_{{ category.id }}" value="{{ category.id }}">{{ category.category_name }}</option>
+                                                        {% if book_item.book_category == category %}
+                                                            <option id="category_option_{{ category.id }}" value="{{ category.id }}" selected>{{ category.category_name }}</option>
+                                                        {% else %}
+                                                            <option id="category_option_{{ category.id }}" value="{{ category.id }}">{{ category.category_name }}</option>
+                                                        {% endif%}
                                                     {% endfor %}
                                                 {% endif %}
                                             </select>                                        
@@ -84,7 +98,11 @@
                                             <select class="form-control" name="cover-select" id="cover-select" >
                                                 {% if book_cover_list %}
                                                     {% for cover in book_cover_list %}  
-                                                        <option id="cover_option_{{ cover.id }}" value="{{ cover.id }}">{{ cover.attribute_name }}</option>
+                                                        {% if book_item.book_cover == cover %}
+                                                            <option id="cover_option_{{ cover.id }}" value="{{ cover.id }}" selected>{{ cover.attribute_name }}</option>
+                                                        {% else %}
+                                                            <option id="cover_option_{{ cover.id }}" value="{{ cover.id }}">{{ cover.attribute_name }}</option>
+                                                        {% endif%}  
                                                     {% endfor %}
                                                 {% endif %}
                                             </select>                                       
@@ -97,8 +115,12 @@
                                         <div class="col-md-9">
                                             <select class="form-control" name="quality-select" id="quality-select" >
                                                 {% if book_quality_list %}
-                                                    {% for quality in book_quality_list %}  
-                                                        <option id="quality_option_{{ quality.id }}" value="{{ quality.id }}">{{ quality.attribute_name }}</option>
+                                                    {% for quality in book_quality_list %}
+                                                        {% if book_item.book_quality == quality %}
+                                                            <option id="quality_option_{{ quality.id }}" value="{{ quality.id }}" selected>{{ quality.attribute_name }}</option>
+                                                        {% else %}
+                                                            <option id="quality_option_{{ quality.id }}" value="{{ quality.id }}">{{ quality.attribute_name }}</option>
+                                                        {% endif%}
                                                     {% endfor %}
                                                 {% endif %}
                                             </select>
@@ -112,16 +134,20 @@
                                              <select class="form-control" name="language-select" id="language-select" >
                                                 {% if book_language_list %}
                                                     {% for language in book_language_list %}  
-                                                        <option id="language_option_{{ language.id }}" value="{{ language.id }}">{{ language.attribute_name }}</option>
+                                                        {% if book_item.book_language == language %}
+                                                            <option id="language_option_{{ language.id }}" value="{{ language.id }}" selected>{{ language.attribute_name }}</option>
+                                                        {% else %}
+                                                            <option id="language_option_{{ language.id }}" value="{{ language.id }}">{{ language.attribute_name }}</option>
+                                                        {% endif%}
                                                     {% endfor %}
                                                 {% endif %}
                                             </select>                                      
                                         </div>
                                     </div></p>
                     
-                                    <p><input type="text" class="form-control" name="book-price-txt" placeholder="{{ lang.page_manage_book_add_price_input }} {{ lang.page_manage_book_add_currency_input }} " maxlength="10" data-toggle="popover" data-content data-placement="top" autocomplete="off" required> </p>
+                                    <p><input type="text" class="form-control" name="book-price-txt" placeholder="{{ lang.page_manage_book_add_price_input }} {{ lang.page_manage_book_add_currency_input }} " maxlength="10" data-toggle="popover" data-content data-placement="top" autocomplete="off" value="{{ book_item.book_price }}" required> </p>
                     
-                                    <p><input type="text" class="form-control" name="book-discount-txt" placeholder="{{ lang.page_manage_book_add_discount_input }} {{ lang.page_manage_book_add_currency_input }} " maxlength="10" autocomplete="off"> </p>
+                                    <p><input type="text" class="form-control" name="book-discount-txt" placeholder="{{ lang.page_manage_book_add_discount_input }} {{ lang.page_manage_book_add_currency_input }} " maxlength="10" value="{{ book_item.book_discount }}" autocomplete="off"> </p>
                     
                                     <p><div class="row">
                                         <div class="col-md-5">
@@ -129,9 +155,18 @@
                                         </div>
                                         
                                         <div class="col-md-7">
-                                            <input type="checkbox" name="book-is-with-priority">
+                                            
+                                            {% if book_item.is_notable %}
+                                                <input type="checkbox" name="book-is-with-priority" checked>
+                                            {% else %}
+                                                <input type="checkbox" name="book-is-with-priority">
+                                            {% endif%}
+                                            
+                                            
                                         </div>
                                     </div></p>
+                
+                                    <!-- TODO: show the list of loaded images -->
                                                     
                                     <p><div class="row">
                                         <div class="col-md-5">

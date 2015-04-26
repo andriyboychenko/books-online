@@ -16,6 +16,7 @@ urlpatterns = patterns('catalogue.views',
     url(r'^catalogue/insert-book-category/$', 'category.insert_book_category'),
     url(r'^catalogue/insert-book-attribute/$', 'bookattribute.insertBookAttribute'),
     url(r'^catalogue/book-add-new/$', 'common.bookaddnew'),
+    url(r'^catalogue/book-edit-load-data/(?P<bookid>[a-z0-9-]{13})/$', 'common.bookedit'),
     url(r'^catalogue/insert-book/$', 'book.insertBook'),
     
     url(r'^catalogue/(?P<book_id>\d+)/$', 'bookdetail'),

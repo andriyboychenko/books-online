@@ -148,6 +148,11 @@
                 document.location.href = "/catalogue/book-add-new/"                              
             });
             
+            $(".edit-btn").click(function (e){
+                var currentEditId = $(this).attr('id');
+                console.log(currentEditId);
+                document.location.href = "/catalogue/book-edit-load-data/"+currentEditId+"/"
+            });
         });
         
     </script>
