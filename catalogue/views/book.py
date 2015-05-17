@@ -101,7 +101,7 @@ def insertBook(request):
                         bookDynamicPath = bookImageUtils.imageDynamicPath
                                                 
                     # It's allowod to upload only 15 valid images per book
-                    if imageCounter >= settings.ALLOWED_IMAGE_QUANT:
+                    if imageCounter > settings.ALLOWED_IMAGE_QUANT:
                         resp = ResponseMessage(2, "wrong-image-quantity")
                         log.warning("Wrong image quantity! Only %d images are allowed. Other images will be discarded" % settings.ALLOWED_IMAGE_QUANT)
                         break;

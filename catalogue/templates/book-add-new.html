@@ -14,7 +14,9 @@
         <link href="/static/dist/css/bootstrap.css" rel="stylesheet" media="screen">
         <link href="/static/dist/css/docs.css" rel="stylesheet" media="screen">
         <link href="/static/css/style.css" rel="stylesheet" media="screen">
-
+        
+        
+        
     </head>
     <header class="navbar navbar-fixed-top">
         <div class="container">
@@ -31,9 +33,16 @@
     </header>
     
     <body>
+        
+        
+        
+        
         <div class="container" >
             <div style="display:none">
                 <input type="hidden" id="object-type" value="bookitem"/>
+                <input type="hidden" id="scroll-limit" value="{{ IMAGES_IN_SCROLL }}"/>
+                <input type="hidden" id="image-max-width" value="{{ THUMBNAIL_X }}"/>
+                <input type="hidden" id="image-max-height" value="{{ THUMBNAIL_Y }}"/>
             </div>
                                     
             <div class="row">
@@ -167,6 +176,38 @@
                                     </div></p>
                 
                                     <!-- TODO: show the list of loaded images -->
+                                    {% if book_item %}
+                                        <div class="row">
+                                            
+                                            {% load staticfiles %}
+                                            <div class="als-container" id="img-navigator">
+                                                <div class="col-md-1">
+                                                    <span class="als-prev"><img src="/static/img/thin_left_arrow_333.png" alt="prev" title="previous" /></span>
+                                                </div>
+                                                <div class="col-md-7">
+                                                    <div class="als-viewport">
+                                                        <ul class="als-wrapper">
+                                                            {% for book_image in book_item.book_images_names %} 
+                                                                <li class="als-item" style="width:153px; height:135px">
+                                                                    <a class="thumbnail image-container" style="width:153px; height:125px">
+                                                                        <img class="image-centered" id="image_{{ forloop.counter0 }}" src="{% static ''%}{{ book_item.book_images_path }}{{ book_image }}"  />
+                                                                    </a>    
+                                                                </li>
+                                                            {% endfor %}  
+                                                        
+                                                            <li class="als-item"></li>
+                                                        
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-1">
+                                                    {% if book_item.book_images_names|length > IMAGES_IN_SCROLL %}
+                                                        <span class="als-next"><img src="/static/img/thin_right_arrow_333.png" alt="next" title="next" /></span>
+                                                    {% endif %}                                      
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endif %}
                                                     
                                     <p><div class="row">
                                         <div class="col-md-5">
@@ -196,8 +237,9 @@
     <script src="/static/js/jquery-ui.js"></script>
     <script src="/static/js/jquery.cookie.js"></script>
     <script src="/static/dist/js/bootstrap.min.js"></script>
+    <script src="/static/js/jquery.als-imagelist-1.7.js"></script>
 
-    
+        
     <script type='text/javascript'>
         
         /*TODO: wrong location*/
@@ -211,6 +253,58 @@
             
             $("#back").click(function (e) {
                 window.location.href = "/catalogue/book-management/"
+            });
+            
+            /* Image scroller http://als.musings.it/ */
+            $("#img-navigator").als({
+                visible_items: $("scroll-limit").val(),
+                scrolling_items: 1,
+                orientation: "horizontal",
+                circular: "no",
+                autoscroll: "no"
+            });
+            
+            /* Image thumbnail JS generator */
+            var imageList = $(".image-centered");
+            imageList.each(function() {
+                
+                console.log($( this ).attr("id"));
+                
+                var imageId = $( this ).attr("id");
+                // Does not work well!!!!!
+                var imgW = document.getElementById($( this ).attr("id")).naturalWidth;
+                var imgH = document.getElementById($( this ).attr("id")).naturalHeight;
+                var maxWidth = $("#image-max-width").val();
+                var maxHeight = $("#image-max-height").val();
+                                
+                var resizingFactor = 1;
+                if ( (maxWidth/imgW) < (maxHeight/imgH) ){
+                    resizingFactor = maxWidth/imgW;
+                } else {
+                    resizingFactor = maxHeight/imgH;
+                }
+                                
+                console.log(imgW+ " " + imgH);
+                console.log(resizingFactor)
+                
+                if (resizingFactor < 1){
+                    var newImgW = Math.floor(imgW * resizingFactor);
+                    var newImgH = Math.floor(imgH * resizingFactor);
+                    $( this ).css("width",newImgW);
+                    $( this ).css("height",newImgH);  
+                    
+                    // WHY???
+                    $( this ).css("position","absolute");
+                    $( this ).css("top","0");
+                    $( this ).css("bottom","0");
+                    $( this ).css("left","0");
+                    $( this ).css("right","0");
+                    $( this ).css("margin","auto");
+                    
+                    
+                    
+                    console.log(newImgW+ " " + newImgH);
+                }
             });
             
         });

@@ -2,6 +2,7 @@ from django.shortcuts import render_to_response
 
 from catalogue.models import BookItem, BookCategory, BookAttribute, BookAttributeType
 from catalogue.entities import RU_ru
+from django.conf import settings
 
 
 def index(request):
@@ -81,6 +82,7 @@ def bookedit(request, bookid):
     
     #TODO: type name should be in constants
     bookitem = BookItem.objects.filter(book_uuid = bookid, active = True)[0]
+    bookitem.book_images_names = eval(bookitem.book_images_names)
     attributeTypeCover = BookAttributeType.objects.filter(type_name = "cover", active = True)[0] 
     attributeTypeQuality = BookAttributeType.objects.filter(type_name = "quality", active = True)[0] 
     attributeTypeLanguage = BookAttributeType.objects.filter(type_name = "language", active = True)[0] 
@@ -94,5 +96,8 @@ def bookedit(request, bookid):
                                 'book_cover_list': bookCoverList,
                                 'book_quality_list': bookQualityList, 
                                 'book_language_list': bookLanguageList, 
+                                'IMAGES_IN_SCROLL': settings.IMAGES_IN_SCROLL,
+                                'THUMBNAIL_X': settings.IMAGE_THUMBNAIL[0],
+                                'THUMBNAIL_Y': settings.IMAGE_THUMBNAIL[1],
                                 'lang': RU_ru})
     
