@@ -257,12 +257,6 @@ a.image-container {
 	text-align: center;
 }
 
-#img-navigator .als-item img {
-	display: block;
-	margin: 0 auto;
-	vertical-align: middle;
-}
-
 #img-navigator .als-prev, #img-navigator .als-next {
 	top: 40px;
 }

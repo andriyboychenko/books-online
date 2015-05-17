@@ -271,40 +271,39 @@
                 console.log($( this ).attr("id"));
                 
                 var imageId = $( this ).attr("id");
-                // Does not work well!!!!!
-                var imgW = document.getElementById($( this ).attr("id")).naturalWidth;
-                var imgH = document.getElementById($( this ).attr("id")).naturalHeight;
+                var imageToResize = document.getElementById($( this ).attr("id"));
                 var maxWidth = $("#image-max-width").val();
                 var maxHeight = $("#image-max-height").val();
-                                
-                var resizingFactor = 1;
-                if ( (maxWidth/imgW) < (maxHeight/imgH) ){
-                    resizingFactor = maxWidth/imgW;
-                } else {
-                    resizingFactor = maxHeight/imgH;
-                }
-                                
-                console.log(imgW+ " " + imgH);
-                console.log(resizingFactor)
+              
+                var newimage = new Image();
                 
-                if (resizingFactor < 1){
-                    var newImgW = Math.floor(imgW * resizingFactor);
-                    var newImgH = Math.floor(imgH * resizingFactor);
-                    $( this ).css("width",newImgW);
-                    $( this ).css("height",newImgH);  
+                $(newimage)
+                    .attr("src", imageToResize.src)
+                    .load(function() {
                     
-                    // WHY???
-                    $( this ).css("position","absolute");
-                    $( this ).css("top","0");
-                    $( this ).css("bottom","0");
-                    $( this ).css("left","0");
-                    $( this ).css("right","0");
-                    $( this ).css("margin","auto");
-                    
-                    
-                    
-                    console.log(newImgW+ " " + newImgH);
-                }
+                        var imgW = this.naturalWidth;
+                        var imgH = this.naturalHeight;
+                        
+                        var resizingFactor = 1;
+                        if ( (maxWidth/imgW) < (maxHeight/imgH) ){
+                            resizingFactor = maxWidth/imgW;
+                        } else {
+                            resizingFactor = maxHeight/imgH;
+                        }
+                        
+                        if (resizingFactor < 1) {
+                            
+                            var newImgW = Math.floor(imgW * resizingFactor);
+                            var newImgH = Math.floor(imgH * resizingFactor);
+                            $( imageToResize ).css("width",newImgW);
+                            $( imageToResize ).css("height",newImgH);  
+                            
+                        }
+
+                });
+                
+                                
+                
             });
             
         });
