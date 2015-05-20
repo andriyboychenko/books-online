@@ -265,11 +265,8 @@
             });
             
             /* Image thumbnail JS generator */
-            var imageList = $(".image-centered");
-            imageList.each(function() {
-                
-                console.log($( this ).attr("id"));
-                
+            $(".image-centered").each(function() {
+                                
                 var imageId = $( this ).attr("id");
                 var imageToResize = document.getElementById($( this ).attr("id"));
                 var maxWidth = $("#image-max-width").val();
